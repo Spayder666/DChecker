@@ -40,10 +40,12 @@ data class StatusAppearance(
     val iconTint: Color,
 )
 
-private val SupportIconTint = Color(0xFF757575)
-private val SafeIconTint = Color(0xFF2E7D32)
-private val WarningIconTint = Color(0xFFB28704)
-private val ErrorIconTint = Color(0xFFC62828)
+// Tints tuned for the always-dark DChacker theme: bright enough on the
+// dark-green surfaces while keeping the danger/warning/safe semantics.
+private val SupportIconTint = Color(0xFF9FAFA2)
+private val SafeIconTint = Color(0xFF4ADE80)
+private val WarningIconTint = Color(0xFFFFC53D)
+private val ErrorIconTint = Color(0xFFFF7A76)
 
 @Composable
 fun rememberStatusAppearance(status: DetectorStatus): StatusAppearance {
