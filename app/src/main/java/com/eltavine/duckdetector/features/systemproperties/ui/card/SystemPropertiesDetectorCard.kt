@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.CompareArrows
 import androidx.compose.material.icons.automirrored.rounded.FactCheck
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material.icons.rounded.CrisisAlert
 import androidx.compose.material.icons.rounded.Fingerprint
 import androidx.compose.material.icons.rounded.Info
@@ -37,15 +38,23 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.eltavine.duckdetector.R
 import com.eltavine.duckdetector.core.ui.components.DetectorCardFrame
 import com.eltavine.duckdetector.core.ui.components.DetectorDetailRowBlock
 import com.eltavine.duckdetector.core.ui.components.DetectorSectionFrame
 import com.eltavine.duckdetector.core.ui.components.WrapSafeText
 import com.eltavine.duckdetector.core.ui.presentation.rememberStatusAppearance
+import com.eltavine.duckdetector.features.systemproperties.ui.SystemPropertiesMismatchDialog
 import com.eltavine.duckdetector.features.systemproperties.ui.model.SystemPropertiesCardModel
 import com.eltavine.duckdetector.features.systemproperties.ui.model.SystemPropertiesDetailRowModel
 import com.eltavine.duckdetector.features.systemproperties.ui.model.SystemPropertiesHeaderFactModel
@@ -57,6 +66,16 @@ fun SystemPropertiesDetectorCard(
     model: SystemPropertiesCardModel,
     modifier: Modifier = Modifier,
 ) {
+    var showMismatches by rememberSaveable { mutableStateOf(false) }
+
+    if (showMismatches) {
+        SystemPropertiesMismatchDialog(
+            mismatches = model.auditMismatches,
+            checkedCount = model.auditCheckedCount,
+            onDismiss = { showMismatches = false },
+        )
+    }
+
     DetectorCardFrame(
         title = model.title,
         subtitle = model.subtitle,
@@ -99,6 +118,20 @@ fun SystemPropertiesDetectorCard(
                 icon = Icons.AutoMirrored.Rounded.CompareArrows,
                 rows = model.sourceRows,
             )
+        }
+
+        if (model.auditRows.isNotEmpty()) {
+            SystemPropertiesDetailSection(
+                title = stringResource(R.string.sp_audit_section_title),
+                icon = Icons.AutoMirrored.Rounded.FactCheck,
+                rows = model.auditRows,
+            )
+            if (model.auditMismatches.isNotEmpty() || model.auditAvailable) {
+                SystemPropertiesAuditListButton(
+                    mismatchCount = model.auditMismatches.size,
+                    onViewMismatches = { showMismatches = true },
+                )
+            }
         }
 
         if (model.consistencyRows.isNotEmpty()) {
@@ -228,6 +261,49 @@ private fun SystemPropertiesFactPairRow(
 }
 
 @Composable
+private fun SystemPropertiesAuditListButton(
+    mismatchCount: Int,
+    onViewMismatches: () -> Unit,
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        shape = ShapeTokens.CornerExtraLarge,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 14.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Rounded.OpenInNew,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(16.dp),
+            )
+            WrapSafeText(
+                text = if (mismatchCount > 0) {
+                    stringResource(R.string.sp_audit_view_mismatches, mismatchCount)
+                } else {
+                    stringResource(R.string.sp_audit_view_all)
+                },
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            TextButton(onClick = onViewMismatches) {
+                WrapSafeText(
+                    text = stringResource(R.string.sp_audit_open),
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun SystemPropertiesDetailSection(
     title: String,
     icon: androidx.compose.ui.graphics.vector.ImageVector,
@@ -256,10 +332,14 @@ private fun SystemPropertiesDetailRow(
     row: SystemPropertiesDetailRowModel,
 ) {
     DetectorDetailRowBlock(
-        label = row.label,
-        value = row.value,
+        label = row.labelResId?.let { stringResource(it) } ?: row.label,
+        value = if (row.valueResId != null && row.valueArg != null) {
+            stringResource(row.valueResId, row.valueArg)
+        } else {
+            row.value
+        },
         status = row.status,
-        detail = row.detail,
+        detail = row.detailResId?.let { stringResource(it) } ?: row.detail,
         detailMonospace = row.detailMonospace,
     )
 }

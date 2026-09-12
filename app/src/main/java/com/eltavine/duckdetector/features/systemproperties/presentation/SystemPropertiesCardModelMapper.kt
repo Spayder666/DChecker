@@ -16,8 +16,10 @@
 
 package com.eltavine.duckdetector.features.systemproperties.presentation
 
+import com.eltavine.duckdetector.R
 import com.eltavine.duckdetector.core.ui.model.DetectorStatus
 import com.eltavine.duckdetector.core.ui.model.InfoKind
+import com.eltavine.duckdetector.features.systemproperties.domain.PropertyAuditMethod
 import com.eltavine.duckdetector.features.systemproperties.domain.SystemPropertiesMethodOutcome
 import com.eltavine.duckdetector.features.systemproperties.domain.SystemPropertiesMethodResult
 import com.eltavine.duckdetector.features.systemproperties.domain.SystemPropertiesReport
@@ -30,6 +32,8 @@ import com.eltavine.duckdetector.features.systemproperties.ui.model.SystemProper
 import com.eltavine.duckdetector.features.systemproperties.ui.model.SystemPropertiesDetailRowModel
 import com.eltavine.duckdetector.features.systemproperties.ui.model.SystemPropertiesHeaderFactModel
 import com.eltavine.duckdetector.features.systemproperties.ui.model.SystemPropertiesImpactItemModel
+import com.eltavine.duckdetector.features.systemproperties.ui.model.SystemPropertiesMismatchMethodModel
+import com.eltavine.duckdetector.features.systemproperties.ui.model.SystemPropertiesMismatchModel
 
 class SystemPropertiesCardModelMapper {
 
@@ -52,6 +56,10 @@ class SystemPropertiesCardModelMapper {
             impactItems = buildImpactItems(report),
             methodRows = buildMethodRows(report),
             scanRows = buildScanRows(report),
+            auditRows = buildAuditRows(report),
+            auditMismatches = buildAuditMismatches(report),
+            auditAvailable = report.fullAudit.checkedCount > 0,
+            auditCheckedCount = report.fullAudit.checkedCount,
         )
     }
 
@@ -567,6 +575,152 @@ class SystemPropertiesCardModelMapper {
         }
     }
 
+    private fun buildAuditRows(report: SystemPropertiesReport): List<SystemPropertiesDetailRowModel> {
+        val audit = report.fullAudit
+        return when (report.stage) {
+            SystemPropertiesStage.LOADING -> listOf(
+                SystemPropertiesDetailRowModel(
+                    label = "Full property audit",
+                    value = "Pending",
+                    status = DetectorStatus.info(InfoKind.SUPPORT),
+                    labelResId = R.string.sp_audit_section_title,
+                ),
+            )
+
+            SystemPropertiesStage.FAILED -> listOf(
+                SystemPropertiesDetailRowModel(
+                    label = "Full property audit",
+                    value = "Failed",
+                    status = DetectorStatus.info(InfoKind.ERROR),
+                    labelResId = R.string.sp_audit_section_title,
+                ),
+            )
+
+            SystemPropertiesStage.READY -> if (audit.checkedCount == 0) {
+                listOf(
+                    SystemPropertiesDetailRowModel(
+                        label = "Full property audit",
+                        value = "Unavailable",
+                        status = DetectorStatus.info(InfoKind.SUPPORT),
+                        detail = "Native property enumeration and shell getprop were both unavailable.",
+                        labelResId = R.string.sp_audit_section_title,
+                        detailResId = R.string.sp_audit_detail_unavailable,
+                    ),
+                )
+            } else {
+                buildList {
+                    add(
+                        SystemPropertiesDetailRowModel(
+                            label = "Properties checked",
+                            value = audit.checkedCount.toString(),
+                            status = DetectorStatus.info(InfoKind.SUPPORT),
+                            detail = "Union of native foreach keys, shell getprop keys, and JVM getprop keys.",
+                            labelResId = R.string.sp_audit_row_checked,
+                            detailResId = R.string.sp_audit_detail_checked,
+                        ),
+                    )
+                    add(
+                        SystemPropertiesDetailRowModel(
+                            label = "Mismatched fields",
+                            value = audit.mismatchCount.toString(),
+                            status = when {
+                                audit.dangerDivergenceCount > 0 -> DetectorStatus.danger()
+                                audit.hasDivergences -> DetectorStatus.warning()
+                                else -> DetectorStatus.allClear()
+                            },
+                            detail = "Fields where at least two read methods returned different stable values.",
+                            labelResId = R.string.sp_audit_row_mismatches,
+                            detailResId = R.string.sp_audit_detail_mismatches,
+                        ),
+                    )
+                    if (audit.transientCount > 0) {
+                        add(
+                            SystemPropertiesDetailRowModel(
+                                label = "Transient skips",
+                                value = audit.transientCount.toString(),
+                                status = DetectorStatus.info(InfoKind.SUPPORT),
+                                detail = "Values that changed between the two read passes and were not reported.",
+                                labelResId = R.string.sp_audit_row_transient,
+                                detailResId = R.string.sp_audit_detail_transient,
+                            ),
+                        )
+                    }
+                    audit.methodCoverage.forEach { (method, count) ->
+                        add(
+                            SystemPropertiesDetailRowModel(
+                                label = auditMethodLabel(method),
+                                value = "$count visible",
+                                status = if (count > 0) DetectorStatus.allClear() else DetectorStatus.info(
+                                    InfoKind.SUPPORT
+                                ),
+                                labelResId = auditMethodResId(method),
+                                valueResId = R.string.sp_audit_method_visible,
+                                valueArg = count,
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun buildAuditMismatches(
+        report: SystemPropertiesReport,
+    ): List<SystemPropertiesMismatchModel> {
+        return report.fullAudit.divergences.map { divergence ->
+            val normalizedCounts = divergence.methodValues.values
+                .map { it.trim().lowercase() }
+                .groupingBy { it }
+                .eachCount()
+            val majorityValue = normalizedCounts.maxByOrNull { it.value }?.key
+            SystemPropertiesMismatchModel(
+                property = divergence.property,
+                kind = divergence.kind,
+                status = when (divergence.severity) {
+                    SystemPropertySeverity.DANGER -> DetectorStatus.danger()
+                    SystemPropertySeverity.WARNING -> DetectorStatus.warning()
+                    SystemPropertySeverity.NEUTRAL -> DetectorStatus.info(InfoKind.SUPPORT)
+                    SystemPropertySeverity.SAFE -> DetectorStatus.allClear()
+                },
+                methods = divergence.methodValues.map { (method, value) ->
+                    SystemPropertiesMismatchMethodModel(
+                        method = method,
+                        value = value,
+                        divergent = value.trim().lowercase() != majorityValue,
+                    )
+                },
+            )
+        }
+    }
+
+    private fun auditMethodResId(
+        method: PropertyAuditMethod,
+    ): Int {
+        return when (method) {
+            PropertyAuditMethod.JAVA_REFLECTION -> R.string.sp_audit_method_reflection
+            PropertyAuditMethod.JVM_GETPROP -> R.string.sp_audit_method_jvm_getprop
+            PropertyAuditMethod.JVM_PROPERTY -> R.string.sp_audit_method_jvm_property
+            PropertyAuditMethod.NATIVE_CALLBACK -> R.string.sp_audit_method_native_callback
+            PropertyAuditMethod.NATIVE_LEGACY -> R.string.sp_audit_method_native_legacy
+            PropertyAuditMethod.NATIVE_SHELL -> R.string.sp_audit_method_native_shell
+            PropertyAuditMethod.BUILD_CONSTANT -> R.string.sp_audit_method_build_constant
+        }
+    }
+
+    private fun auditMethodLabel(
+        method: PropertyAuditMethod,
+    ): String {
+        return when (method) {
+            PropertyAuditMethod.JAVA_REFLECTION -> "Java reflection"
+            PropertyAuditMethod.JVM_GETPROP -> "getprop (JVM)"
+            PropertyAuditMethod.JVM_PROPERTY -> "System.getProperty"
+            PropertyAuditMethod.NATIVE_CALLBACK -> "Native callback"
+            PropertyAuditMethod.NATIVE_LEGACY -> "Native legacy get"
+            PropertyAuditMethod.NATIVE_SHELL -> "Native shell getprop"
+            PropertyAuditMethod.BUILD_CONSTANT -> "Build constant"
+        }
+    }
+
     private fun signalRow(signal: SystemPropertySignal): SystemPropertiesDetailRowModel {
         val detailLines = buildList {
             add(signal.description)
@@ -642,6 +796,7 @@ class SystemPropertiesCardModelMapper {
             "Raw boot params",
             "Build constants",
             "Source consistency",
+            "Full property audit",
             "Cross-check rules",
             "Prop area layout",
             "Property catalog",

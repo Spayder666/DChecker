@@ -16,7 +16,10 @@
 
 package com.eltavine.duckdetector.features.systemproperties.ui.model
 
+import androidx.annotation.StringRes
 import com.eltavine.duckdetector.core.ui.model.DetectorStatus
+import com.eltavine.duckdetector.features.systemproperties.domain.PropertyAuditMethod
+import com.eltavine.duckdetector.features.systemproperties.domain.PropertyDivergenceKind
 
 data class SystemPropertiesCardModel(
     val title: String,
@@ -34,6 +37,10 @@ data class SystemPropertiesCardModel(
     val impactItems: List<SystemPropertiesImpactItemModel>,
     val methodRows: List<SystemPropertiesDetailRowModel>,
     val scanRows: List<SystemPropertiesDetailRowModel>,
+    val auditRows: List<SystemPropertiesDetailRowModel> = emptyList(),
+    val auditMismatches: List<SystemPropertiesMismatchModel> = emptyList(),
+    val auditAvailable: Boolean = false,
+    val auditCheckedCount: Int = 0,
 )
 
 data class SystemPropertiesHeaderFactModel(
@@ -48,9 +55,26 @@ data class SystemPropertiesDetailRowModel(
     val status: DetectorStatus,
     val detail: String? = null,
     val detailMonospace: Boolean = false,
+    @StringRes val labelResId: Int? = null,
+    @StringRes val valueResId: Int? = null,
+    val valueArg: Int? = null,
+    @StringRes val detailResId: Int? = null,
 )
 
 data class SystemPropertiesImpactItemModel(
     val text: String,
     val status: DetectorStatus,
+)
+
+data class SystemPropertiesMismatchMethodModel(
+    val method: PropertyAuditMethod,
+    val value: String,
+    val divergent: Boolean,
+)
+
+data class SystemPropertiesMismatchModel(
+    val property: String,
+    val kind: PropertyDivergenceKind,
+    val status: DetectorStatus,
+    val methods: List<SystemPropertiesMismatchMethodModel>,
 )
