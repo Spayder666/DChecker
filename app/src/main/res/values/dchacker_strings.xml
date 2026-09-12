@@ -1,0 +1,70 @@
+<!--
+Copyright 2026 Duck Apps Contributor
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+    <!-- Full property audit: card section -->
+    <string name="sp_audit_section_title">Full property audit</string>
+    <string name="sp_audit_row_checked">Properties checked</string>
+    <string name="sp_audit_row_mismatches">Mismatched fields</string>
+    <string name="sp_audit_row_transient">Transient skips</string>
+    <string name="sp_audit_detail_checked">Union of native foreach keys, shell getprop keys, and JVM getprop keys.</string>
+    <string name="sp_audit_detail_mismatches">Fields where at least two read methods returned different stable values.</string>
+    <string name="sp_audit_detail_transient">Values that changed between the two read passes and were not reported.</string>
+    <string name="sp_audit_detail_unavailable">Native property enumeration and shell getprop were both unavailable.</string>
+    <string name="sp_audit_method_visible">%1$d visible</string>
+    <string name="sp_audit_view_mismatches">View %1$d mismatched field(s)</string>
+    <string name="sp_audit_view_all">View checked fields</string>
+    <string name="sp_audit_open">Open</string>
+
+    <!-- Full property audit: read methods -->
+    <string name="sp_audit_method_reflection">Java reflection</string>
+    <string name="sp_audit_method_jvm_getprop">getprop (JVM)</string>
+    <string name="sp_audit_method_jvm_property">System.getProperty</string>
+    <string name="sp_audit_method_native_callback">Native callback</string>
+    <string name="sp_audit_method_native_legacy">Native legacy get</string>
+    <string name="sp_audit_method_native_shell">Native shell getprop</string>
+    <string name="sp_audit_method_build_constant">Build constant</string>
+
+    <!-- Full property audit: divergence kinds -->
+    <string name="sp_audit_kind_java_native">Java vs native</string>
+    <string name="sp_audit_kind_native_native">Native vs native</string>
+    <string name="sp_audit_kind_shell_inline">Shell vs in-process</string>
+    <string name="sp_audit_kind_framework_property">Framework vs property</string>
+
+    <!-- Mismatch dialog -->
+    <string name="sp_mismatch_dialog_title">Mismatched fields</string>
+    <string name="sp_mismatch_dialog_subtitle">Fields where read methods returned different stable values across %1$d checked properties.</string>
+    <string name="sp_mismatch_chip_checked">Checked</string>
+    <string name="sp_mismatch_chip_mismatches">Mismatches</string>
+    <string name="sp_mismatch_chip_danger">Danger</string>
+    <string name="sp_mismatch_search_hint">Search property or value</string>
+    <string name="sp_mismatch_filter_all">All %1$d</string>
+    <string name="sp_mismatch_filter_danger">Danger %1$d</string>
+    <string name="sp_mismatch_filter_warning">Warning %1$d</string>
+    <string name="sp_mismatch_filter_info">Info %1$d</string>
+    <string name="sp_mismatch_empty_none">No mismatched fields. Every read method returned the same value for every property.</string>
+    <string name="sp_mismatch_empty_filter">No fields match the current search or filter.</string>
+    <string name="sp_mismatch_close">Close</string>
+
+    <!-- Settings: language -->
+    <string name="settings_language_title">App language</string>
+    <string name="settings_language_subtitle">Choose the interface language. Applies immediately.</string>
+    <string name="settings_language_system">System default</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_ru">Русский</string>
+    <string name="settings_language_zh">中文</string>
+</resources>

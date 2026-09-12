@@ -1,0 +1,70 @@
+<!--
+Copyright 2026 Duck Apps Contributor
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+    <!-- Полный аудит проперти: секция карточки -->
+    <string name="sp_audit_section_title">Полный аудит проперти</string>
+    <string name="sp_audit_row_checked">Проверено проперти</string>
+    <string name="sp_audit_row_mismatches">Несовпадающие поля</string>
+    <string name="sp_audit_row_transient">Пропущено (нестабильные)</string>
+    <string name="sp_audit_detail_checked">Объединение ключей native foreach, shell getprop и JVM getprop.</string>
+    <string name="sp_audit_detail_mismatches">Поля, где минимум два способа чтения вернули разные стабильные значения.</string>
+    <string name="sp_audit_detail_transient">Значения, изменившиеся между двумя проходами чтения, — не сообщаются как находки.</string>
+    <string name="sp_audit_detail_unavailable">Нативное перечисление проперти и shell getprop недоступны.</string>
+    <string name="sp_audit_method_visible">видно: %1$d</string>
+    <string name="sp_audit_view_mismatches">Показать несовпадающих полей: %1$d</string>
+    <string name="sp_audit_view_all">Посмотреть проверенные поля</string>
+    <string name="sp_audit_open">Открыть</string>
+
+    <!-- Полный аудит проперти: способы чтения -->
+    <string name="sp_audit_method_reflection">Java reflection</string>
+    <string name="sp_audit_method_jvm_getprop">getprop (JVM)</string>
+    <string name="sp_audit_method_jvm_property">System.getProperty</string>
+    <string name="sp_audit_method_native_callback">Native callback</string>
+    <string name="sp_audit_method_native_legacy">Native legacy get</string>
+    <string name="sp_audit_method_native_shell">Native shell getprop</string>
+    <string name="sp_audit_method_build_constant">Константа Build</string>
+
+    <!-- Полный аудит проперти: типы расхождений -->
+    <string name="sp_audit_kind_java_native">Java против native</string>
+    <string name="sp_audit_kind_native_native">Native против native</string>
+    <string name="sp_audit_kind_shell_inline">Shell против in-process</string>
+    <string name="sp_audit_kind_framework_property">Framework против проперти</string>
+
+    <!-- Диалог несовпадений -->
+    <string name="sp_mismatch_dialog_title">Несовпадающие поля</string>
+    <string name="sp_mismatch_dialog_subtitle">Поля, где способы чтения вернули разные стабильные значения. Проверено проперти: %1$d.</string>
+    <string name="sp_mismatch_chip_checked">Проверено</string>
+    <string name="sp_mismatch_chip_mismatches">Несовпадения</string>
+    <string name="sp_mismatch_chip_danger">Опасные</string>
+    <string name="sp_mismatch_search_hint">Поиск по имени или значению</string>
+    <string name="sp_mismatch_filter_all">Все %1$d</string>
+    <string name="sp_mismatch_filter_danger">Опасные %1$d</string>
+    <string name="sp_mismatch_filter_warning">Внимание %1$d</string>
+    <string name="sp_mismatch_filter_info">Инфо %1$d</string>
+    <string name="sp_mismatch_empty_none">Несовпадающих полей нет. Все способы чтения вернули одинаковые значения для каждой проперти.</string>
+    <string name="sp_mismatch_empty_filter">Нет полей, подходящих под текущий поиск или фильтр.</string>
+    <string name="sp_mismatch_close">Закрыть</string>
+
+    <!-- Настройки: язык -->
+    <string name="settings_language_title">Язык приложения</string>
+    <string name="settings_language_subtitle">Выберите язык интерфейса. Применяется сразу.</string>
+    <string name="settings_language_system">Как в системе</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_ru">Русский</string>
+    <string name="settings_language_zh">中文</string>
+</resources>

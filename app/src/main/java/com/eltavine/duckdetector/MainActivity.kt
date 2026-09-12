@@ -23,15 +23,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.FrameLayout
-import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ComposeView
 import com.eltavine.duckdetector.core.startup.preload.EarlyMountPreloadStore
 import com.eltavine.duckdetector.core.startup.preload.EarlyVirtualizationPreloadStore
 import com.eltavine.duckdetector.ui.DuckDetectorApp
 import com.eltavine.duckdetector.ui.theme.DuckDetectorTheme
 
-class MainActivity : ComponentActivity() {
+// AppCompatActivity is required so per-app locales set through
+// AppCompatDelegate apply and persist below API 33.
+class MainActivity : AppCompatActivity() {
 
     private var procMountSampler: WebView? = null
 

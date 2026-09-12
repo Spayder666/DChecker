@@ -1,0 +1,70 @@
+<!--
+Copyright 2026 Duck Apps Contributor
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+    <!-- 完整屬性稽核：卡片分區 -->
+    <string name="sp_audit_section_title">完整屬性稽核</string>
+    <string name="sp_audit_row_checked">已檢查屬性</string>
+    <string name="sp_audit_row_mismatches">不一致欄位</string>
+    <string name="sp_audit_row_transient">跳過的暫態值</string>
+    <string name="sp_audit_detail_checked">native foreach、shell getprop 与 JVM getprop 键的聯集。</string>
+    <string name="sp_audit_detail_mismatches">至少两种讀取方式回傳了不同穩定值的字段。</string>
+    <string name="sp_audit_detail_transient">在兩輪讀取之间發生變化、因此不作為發現的值。</string>
+    <string name="sp_audit_detail_unavailable">native 属性列舉与 shell getprop 均不可用。</string>
+    <string name="sp_audit_method_visible">可見 %1$d</string>
+    <string name="sp_audit_view_mismatches">查看 %1$d 个不一致欄位</string>
+    <string name="sp_audit_view_all">檢視已檢查欄位</string>
+    <string name="sp_audit_open">開啟</string>
+
+    <!-- 完整屬性稽核：讀取方式 -->
+    <string name="sp_audit_method_reflection">Java 反射</string>
+    <string name="sp_audit_method_jvm_getprop">getprop（JVM）</string>
+    <string name="sp_audit_method_jvm_property">System.getProperty</string>
+    <string name="sp_audit_method_native_callback">Native callback</string>
+    <string name="sp_audit_method_native_legacy">Native legacy get</string>
+    <string name="sp_audit_method_native_shell">Native shell getprop</string>
+    <string name="sp_audit_method_build_constant">Build 常數</string>
+
+    <!-- 完整屬性稽核：不一致類型 -->
+    <string name="sp_audit_kind_java_native">Java 与 native</string>
+    <string name="sp_audit_kind_native_native">native 与 native</string>
+    <string name="sp_audit_kind_shell_inline">shell 与處理程序內</string>
+    <string name="sp_audit_kind_framework_property">框架常數與屬性</string>
+
+    <!-- 不一致对话框 -->
+    <string name="sp_mismatch_dialog_title">不一致欄位</string>
+    <string name="sp_mismatch_dialog_subtitle">各讀取方式回傳不同穩定值的字段，共检查 %1$d 个属性。</string>
+    <string name="sp_mismatch_chip_checked">已检查</string>
+    <string name="sp_mismatch_chip_mismatches">不一致</string>
+    <string name="sp_mismatch_chip_danger">危險</string>
+    <string name="sp_mismatch_search_hint">搜尋屬性名稱或值</string>
+    <string name="sp_mismatch_filter_all">全部 %1$d</string>
+    <string name="sp_mismatch_filter_danger">危險 %1$d</string>
+    <string name="sp_mismatch_filter_warning">警告 %1$d</string>
+    <string name="sp_mismatch_filter_info">資訊 %1$d</string>
+    <string name="sp_mismatch_empty_none">没有不一致欄位。所有属性在各讀取方式下均回傳相同值。</string>
+    <string name="sp_mismatch_empty_filter">沒有符合目前搜尋或篩選的欄位。</string>
+    <string name="sp_mismatch_close">關閉</string>
+
+    <!-- 设置：语言 -->
+    <string name="settings_language_title">應用程式語言</string>
+    <string name="settings_language_subtitle">選擇介面語言，立即生效。</string>
+    <string name="settings_language_system">跟隨系統</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_ru">Русский</string>
+    <string name="settings_language_zh">中文</string>
+</resources>

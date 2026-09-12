@@ -33,11 +33,14 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.NetworkCheck
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.os.LocaleListCompat
 import com.eltavine.duckdetector.R
 import com.eltavine.duckdetector.core.ui.components.WrapSafeText
 import com.eltavine.duckdetector.features.licenses.ui.OpenSourceLicensesEntry
@@ -167,6 +171,8 @@ fun SettingsScreen(
                     }
                 }
 
+                AppLanguageCard()
+
                 AboutCard(
                     versionName = uiState.versionName,
                     versionCode = uiState.versionCode,
@@ -183,6 +189,91 @@ fun SettingsScreen(
                 AuthorCard()
 
                 Spacer(modifier = Modifier.height(72.dp))
+            }
+        }
+    }
+}
+
+private val LanguageOptions = listOf(
+    null to R.string.settings_language_system,
+    "en" to R.string.settings_language_en,
+    "ru" to R.string.settings_language_ru,
+    "zh-CN" to R.string.settings_language_zh,
+)
+
+@Composable
+private fun AppLanguageCard() {
+    val current = AppCompatDelegate.getApplicationLocales()
+    val currentTag = current.toLanguageTags().takeIf { it.isNotEmpty() }
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = ShapeTokens.CornerExtraLarge,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 18.dp, vertical = 18.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+            ) {
+                Surface(
+                    shape = ShapeTokens.CornerLarge,
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .padding(10.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Language,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                }
+
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    WrapSafeText(
+                        text = stringResource(R.string.settings_language_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    WrapSafeText(
+                        text = stringResource(R.string.settings_language_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                LanguageOptions.forEach { (tag, labelRes) ->
+                    val selected = currentTag == tag
+                    FilterChip(
+                        selected = selected,
+                        onClick = {
+                            AppCompatDelegate.setApplicationLocales(
+                                if (tag == null) {
+                                    LocaleListCompat.getEmptyLocaleList()
+                                } else {
+                                    LocaleListCompat.forLanguageTags(tag)
+                                }
+                            )
+                        },
+                        label = { WrapSafeText(text = stringResource(labelRes)) },
+                    )
+                }
             }
         }
     }
