@@ -40,6 +40,7 @@ enum class SystemPropertyCategory {
     BUILD_FINGERPRINT,
     SOURCE_CONSISTENCY,
     PROPERTY_CONSISTENCY,
+    FULL_AUDIT,
 }
 
 enum class SystemPropertySource {
@@ -93,6 +94,7 @@ data class SystemPropertiesReport(
     val propAreaContextCount: Int,
     val propAreaHoleCount: Int,
     val methods: List<SystemPropertiesMethodResult>,
+    val fullAudit: FullPropertyAudit = FullPropertyAudit(),
     val errorMessage: String? = null,
 ) {
     val dangerSignals: List<SystemPropertySignal>

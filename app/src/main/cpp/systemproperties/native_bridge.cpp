@@ -17,6 +17,7 @@
 #include <jni.h>
 
 #include "systemproperties/boot_param_utils.h"
+#include "systemproperties/full_property_snapshot.h"
 #include "systemproperties/prop_area_probe.h"
 #include "systemproperties/property_utils.h"
 #include "systemproperties/readonly_handle_probe.h"
@@ -24,6 +25,7 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <sys/system_properties.h>
 #include <vector>
 
 namespace {
@@ -118,5 +120,60 @@ Java_com_eltavine_duckdetector_features_systemproperties_data_native_SystemPrope
                 << "\n";
     }
 
+    return to_jstring(env, output.str());
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_eltavine_duckdetector_features_systemproperties_data_native_SystemPropertiesNativeBridge_nativeCollectFullSnapshot(
+        JNIEnv *env,
+        jobject
+) {
+    const systemproperties::FullPropertySnapshot snapshot =
+            systemproperties::collect_full_property_snapshot();
+
+    std::ostringstream output;
+    output << "FOREACH_AVAILABLE=" << (snapshot.foreach_available ? 1 : 0) << "\n";
+    output << "TOTAL_COUNT=" << snapshot.entries.size() << "\n";
+    output << "SHELL_AVAILABLE=" << (snapshot.shell_available ? 1 : 0) << "\n";
+
+    for (const auto &entry: snapshot.entries) {
+        output
+                << "ENTRY="
+                << entry.key
+                << '|'
+                << systemproperties::escape_value(entry.callback_value)
+                << '|'
+                << systemproperties::escape_value(entry.legacy_value)
+                << "\n";
+    }
+    for (const auto &[key, value]: snapshot.shell_properties) {
+        output << "SHELL=" << key << "|" << systemproperties::escape_value(value) << "\n";
+    }
+
+    return to_jstring(env, output.str());
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_eltavine_duckdetector_features_systemproperties_data_native_SystemPropertiesNativeBridge_nativeReadInlineSnapshot(
+        JNIEnv *env,
+        jobject,
+        jobjectArray property_names
+) {
+    const std::vector<std::string> properties = read_requested_properties(env, property_names);
+    std::ostringstream output;
+    output << "AVAILABLE=1\n";
+    for (const std::string &key: properties) {
+        char legacy_value[PROP_VALUE_MAX] = {0};
+        const int legacy_length = __system_property_get(key.c_str(), legacy_value);
+        output
+                << "INLINE="
+                << key
+                << '|'
+                << systemproperties::escape_value(systemproperties::read_system_property(key))
+                << '|'
+                << systemproperties::escape_value(
+                        legacy_length > 0 ? std::string(legacy_value) : "")
+                << "\n";
+    }
     return to_jstring(env, output.str());
 }

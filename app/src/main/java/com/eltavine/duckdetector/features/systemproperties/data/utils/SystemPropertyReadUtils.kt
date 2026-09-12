@@ -16,6 +16,8 @@
 
 package com.eltavine.duckdetector.features.systemproperties.data.utils
 
+import com.eltavine.duckdetector.features.systemproperties.data.native.FullPropertyNativeEntry
+import com.eltavine.duckdetector.features.systemproperties.data.native.FullPropertyNativeSnapshot
 import com.eltavine.duckdetector.features.systemproperties.data.native.SystemPropertiesNativeBridge
 import com.eltavine.duckdetector.features.systemproperties.data.native.SystemPropertiesNativeSnapshot
 import com.eltavine.duckdetector.features.systemproperties.domain.SystemPropertyCategory
@@ -30,15 +32,59 @@ data class MultiSourcePropertyRead(
     val sourceValues: Map<SystemPropertySource, String>,
 )
 
+/**
+ * Read port consumed by the full property audit. Splitting it from the utils
+ * class keeps the comparator unit-testable with canned reads.
+ */
+interface PropertyReadAccess {
+    fun readReflectionValue(property: String): String
+
+    fun readJvmValue(property: String): String
+
+    fun readInlineNativeEntry(property: String): FullPropertyNativeEntry?
+}
+
 class SystemPropertyReadUtils(
     private val nativeBridge: SystemPropertiesNativeBridge = SystemPropertiesNativeBridge(),
-) {
+) : PropertyReadAccess {
     private var getpropSnapshot: Map<String, String>? = null
 
     fun collectNativeSnapshot(
         propertyNames: Collection<String>,
     ): SystemPropertiesNativeSnapshot {
         return nativeBridge.collectSnapshot(propertyNames)
+    }
+
+    fun collectFullNativeSnapshot(): FullPropertyNativeSnapshot {
+        return nativeBridge.collectFullSnapshot()
+    }
+
+    fun readInlineNativeSnapshot(
+        propertyNames: Collection<String>,
+    ): Map<String, FullPropertyNativeEntry> {
+        return nativeBridge.readInlineSnapshot(propertyNames)
+    }
+
+    fun fullGetpropSnapshot(): Map<String, String> {
+        return getpropSnapshot ?: readGetpropSnapshot().also { getpropSnapshot = it }
+    }
+
+    override fun readReflectionValue(
+        property: String,
+    ): String {
+        return readViaReflection(property)
+    }
+
+    override fun readJvmValue(
+        property: String,
+    ): String {
+        return readViaJvm(property)
+    }
+
+    override fun readInlineNativeEntry(
+        property: String,
+    ): FullPropertyNativeEntry? {
+        return nativeBridge.readInlineSnapshot(listOf(property))[property]
     }
 
     fun readProperty(

@@ -53,6 +53,7 @@ set(SYSTEM_PROPERTIES_SOURCES
     systemproperties/boot_param_utils.cpp
     systemproperties/prop_area_probe.cpp
     systemproperties/readonly_handle_probe.cpp
+    systemproperties/full_property_snapshot.cpp
     systemproperties/native_bridge.cpp
 )
 
