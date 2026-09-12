@@ -110,12 +110,12 @@ abstract class RenameApkTask : DefaultTask() {
                 val filterSuffix = builtArtifact.filters.joinToString("-") { filter ->
                     "${filter.filterType.name.lowercase()}-${filter.identifier}"
                 }
-                "Duck Detector-$versionedName-$filterSuffix.apk"
+                "DChacker-$versionedName-$filterSuffix.apk"
             }
 
             VariantOutputConfiguration.OutputType.SINGLE,
             VariantOutputConfiguration.OutputType.UNIVERSAL -> {
-                "Duck Detector-$versionedName.apk"
+                "DChacker-$versionedName.apk"
             }
         }
     }

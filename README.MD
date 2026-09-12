@@ -19,6 +19,19 @@
 
 # Overview
 
+> **DChacker** is a fork of [Duck-Detector-Refactoring](https://github.com/eltavine/Duck-Detector-Refactoring) (Apache 2.0) that turns the System Properties module into a full **property-consistency checker** and reskins the app.
+>
+> **What DChacker adds on top of upstream:**
+>
+> - **Full property audit (Java ↔ Native)** — every system property on the device is enumerated (native `__system_property_foreach`) and compared across six read vantage points: Java reflection (`SystemProperties.get`), JVM `getprop` dump, `System.getProperty`, native callback read (`__system_property_read_callback`), legacy 92-byte native read (`__system_property_get`), and native shell `getprop` via `popen`. A stable disagreement between methods means something between the reader and the property area rewrites that surface (hook/spoofer evidence). The technique is inspired by VD-Infos; no AGPL code is used.
+> - **Mismatched-fields view** — a dedicated dialog lists every diverged field with the value each method returned (monospace, divergent values highlighted), searchable and filterable by severity, plus counters for checked / mismatched / danger.
+> - **False-positive control** — divergences are confirmed by a second inline read pass; transient values are skipped and counted, known-volatile prefixes (`init.svc.*`, `net.dns*`, `dhcp.*`, …) are downgraded to informational. `ro.*` Java-vs-native drift is flagged as danger.
+> - **Framework cross-check** — `Build.MODEL/BRAND/DEVICE/…` are compared against `ro.product.*` partition variants, honoring `ro.product.property_source_order`, plus `ro.build.*` constants and `Build.TIME` vs `ro.build.date.utc`.
+> - **DChacker dark-green theme** — always-dark Material 3 scheme with green accents and status icons retuned for dark surfaces.
+> - **UI languages: English / Русский / 中文** — in-app language picker in Settings (per-app locales, persisted below API 33 via AppCompat).
+>
+> Renamed to **DChacker**; package id stays `com.eltavine.duckdetector` for update compatibility.
+
 DuckDetector collects and correlates security-relevant evidence on an Android device. It looks for boot-state changes, root and SU artifacts, runtime injection or hooking, mount namespace anomalies, modified system properties, suspicious applications, KeyStore and attestation inconsistencies, and signs of virtualization.
 
 The app combines a Jetpack Compose interface, feature-oriented Kotlin packages, and a native C++/assembly library. Results are diagnostic signals, not an authoritative statement that a device is secure or compromised.
