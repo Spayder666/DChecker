@@ -258,7 +258,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_su_data_native_SuNativeBridge_nativeCollectSnapshot(
+Java_com_dchecker_info_features_su_data_native_SuNativeBridge_nativeCollectSnapshot(
         JNIEnv *env,
         jobject
 ) {

@@ -59,7 +59,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_playintegrityfix_data_native_PlayIntegrityFixNativeBridge_nativeCollectSnapshot(
+Java_com_dchecker_info_features_playintegrityfix_data_native_PlayIntegrityFixNativeBridge_nativeCollectSnapshot(
         JNIEnv *env,
         jobject,
         jobjectArray property_names

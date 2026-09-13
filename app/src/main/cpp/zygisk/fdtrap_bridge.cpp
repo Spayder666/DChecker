@@ -21,7 +21,7 @@
 #include "zygisk/probes/fd_trap.h"
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_eltavine_duckdetector_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBridge_nativeSetupTrapFd(
+Java_com_dchecker_info_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBridge_nativeSetupTrapFd(
         JNIEnv *env,
         jobject,
         jstring cache_dir
@@ -35,7 +35,7 @@ Java_com_eltavine_duckdetector_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBri
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_eltavine_duckdetector_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBridge_nativeVerifyTrapFd(
+Java_com_dchecker_info_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBridge_nativeVerifyTrapFd(
         JNIEnv *,
         jobject,
         jint fd
@@ -44,7 +44,7 @@ Java_com_eltavine_duckdetector_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBri
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBridge_nativeGetTrapDetails(
+Java_com_dchecker_info_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBridge_nativeGetTrapDetails(
         JNIEnv *env,
         jobject
 ) {
@@ -52,7 +52,7 @@ Java_com_eltavine_duckdetector_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBri
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_eltavine_duckdetector_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBridge_nativeCleanupTrapFd(
+Java_com_dchecker_info_features_zygisk_data_fdtrap_ZygiskFdTrapNativeBridge_nativeCleanupTrapFd(
         JNIEnv *,
         jobject,
         jint fd

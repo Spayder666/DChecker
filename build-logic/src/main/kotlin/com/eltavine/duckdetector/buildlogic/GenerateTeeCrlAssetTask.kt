@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.eltavine.duckdetector.buildlogic
+package com.dchecker.info.buildlogic
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException

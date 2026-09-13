@@ -30,7 +30,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_virtualization_data_native_VirtualizationNativeBridge_nativeCollectSnapshot(
+Java_com_dchecker_info_features_virtualization_data_native_VirtualizationNativeBridge_nativeCollectSnapshot(
         JNIEnv *env,
         jobject
 ) {
@@ -39,7 +39,7 @@ Java_com_eltavine_duckdetector_features_virtualization_data_native_Virtualizatio
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunTimingTrap(
+Java_com_dchecker_info_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunTimingTrap(
         JNIEnv *env,
         jobject
 ) {
@@ -48,7 +48,7 @@ Java_com_eltavine_duckdetector_features_virtualization_data_native_Virtualizatio
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunSyscallParityTrap(
+Java_com_dchecker_info_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunSyscallParityTrap(
         JNIEnv *env,
         jobject
 ) {
@@ -57,7 +57,7 @@ Java_com_eltavine_duckdetector_features_virtualization_data_native_Virtualizatio
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunAsmCounterTrap(
+Java_com_dchecker_info_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunAsmCounterTrap(
         JNIEnv *env,
         jobject
 ) {
@@ -66,7 +66,7 @@ Java_com_eltavine_duckdetector_features_virtualization_data_native_Virtualizatio
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunAsmRawSyscallTrap(
+Java_com_dchecker_info_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunAsmRawSyscallTrap(
         JNIEnv *env,
         jobject
 ) {
@@ -75,7 +75,7 @@ Java_com_eltavine_duckdetector_features_virtualization_data_native_Virtualizatio
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunSacrificialSyscallPack(
+Java_com_dchecker_info_features_virtualization_data_native_VirtualizationNativeBridge_nativeRunSacrificialSyscallPack(
         JNIEnv *env,
         jobject
 ) {

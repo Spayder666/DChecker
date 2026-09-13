@@ -18,7 +18,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.eltavine.duckdetector.buildlogic"
+group = "com.dchecker.info.buildlogic"
 
 java {
     toolchain {
@@ -36,11 +36,11 @@ gradlePlugin {
     plugins {
         register("duckDetectorAndroidApplication") {
             id = "duckdetector.android.application"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorAndroidApplicationConventionPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorAndroidApplicationConventionPlugin"
         }
         register("duckDetectorAndroidApkArtifacts") {
             id = "duckdetector.android.apk-artifacts"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorApkArtifactsConventionPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorApkArtifactsConventionPlugin"
         }
     }
 }

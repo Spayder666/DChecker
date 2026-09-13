@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.eltavine.duckdetector.buildlogic
+package com.dchecker.info.buildlogic
 
 import com.android.build.api.artifact.ArtifactTransformationRequest
 import com.android.build.api.artifact.SingleArtifact
@@ -110,12 +110,12 @@ abstract class RenameApkTask : DefaultTask() {
                 val filterSuffix = builtArtifact.filters.joinToString("-") { filter ->
                     "${filter.filterType.name.lowercase()}-${filter.identifier}"
                 }
-                "DChacker-$versionedName-$filterSuffix.apk"
+                "DChecker-$versionedName-$filterSuffix.apk"
             }
 
             VariantOutputConfiguration.OutputType.SINGLE,
             VariantOutputConfiguration.OutputType.UNIVERSAL -> {
-                "DChacker-$versionedName.apk"
+                "DChecker-$versionedName.apk"
             }
         }
     }

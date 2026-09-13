@@ -20,10 +20,10 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector"
+    namespace = "com.dchecker.info"
 
     defaultConfig {
-        applicationId = "com.eltavine.duckdetector"
+        applicationId = "com.dchecker.info"
     }
 }
 

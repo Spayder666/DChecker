@@ -40,6 +40,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Duck Detector"
+rootProject.name = "DChecker"
 include(":app")
  

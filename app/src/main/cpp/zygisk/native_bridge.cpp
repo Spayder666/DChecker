@@ -33,7 +33,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_zygisk_data_native_ZygiskNativeBridge_nativeCollectSnapshot(
+Java_com_dchecker_info_features_zygisk_data_native_ZygiskNativeBridge_nativeCollectSnapshot(
         JNIEnv *env,
         jobject
 ) {

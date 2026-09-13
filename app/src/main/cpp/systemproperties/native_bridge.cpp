@@ -73,7 +73,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_systemproperties_data_native_SystemPropertiesNativeBridge_nativeCollectSnapshot(
+Java_com_dchecker_info_features_systemproperties_data_native_SystemPropertiesNativeBridge_nativeCollectSnapshot(
         JNIEnv *env,
         jobject,
         jobjectArray property_names
@@ -124,7 +124,7 @@ Java_com_eltavine_duckdetector_features_systemproperties_data_native_SystemPrope
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_systemproperties_data_native_SystemPropertiesNativeBridge_nativeCollectFullSnapshot(
+Java_com_dchecker_info_features_systemproperties_data_native_SystemPropertiesNativeBridge_nativeCollectFullSnapshot(
         JNIEnv *env,
         jobject
 ) {
@@ -154,7 +154,7 @@ Java_com_eltavine_duckdetector_features_systemproperties_data_native_SystemPrope
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_systemproperties_data_native_SystemPropertiesNativeBridge_nativeReadInlineSnapshot(
+Java_com_dchecker_info_features_systemproperties_data_native_SystemPropertiesNativeBridge_nativeReadInlineSnapshot(
         JNIEnv *env,
         jobject,
         jobjectArray property_names

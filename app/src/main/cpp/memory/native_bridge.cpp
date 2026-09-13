@@ -30,7 +30,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_memory_data_native_MemoryNativeBridge_nativeCollectSnapshot(
+Java_com_dchecker_info_features_memory_data_native_MemoryNativeBridge_nativeCollectSnapshot(
         JNIEnv *env,
         jobject
 ) {

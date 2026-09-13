@@ -240,7 +240,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_kernelcheck_data_native_KernelCheckNativeBridge_nativeCollectSnapshot(
+Java_com_dchecker_info_features_kernelcheck_data_native_KernelCheckNativeBridge_nativeCollectSnapshot(
         JNIEnv *env,
         jobject /* this */
 ) {

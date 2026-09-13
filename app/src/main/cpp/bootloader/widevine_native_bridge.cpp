@@ -79,7 +79,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_eltavine_duckdetector_features_bootloader_data_widevine_WidevineNativeBridge_nativeReadProperties(
+Java_com_dchecker_info_features_bootloader_data_widevine_WidevineNativeBridge_nativeReadProperties(
         JNIEnv *env,
         jobject
 ) {

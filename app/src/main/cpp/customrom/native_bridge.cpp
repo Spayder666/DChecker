@@ -277,7 +277,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_customrom_data_native_CustomRomNativeBridge_nativeCollectSnapshot(
+Java_com_dchecker_info_features_customrom_data_native_CustomRomNativeBridge_nativeCollectSnapshot(
         JNIEnv *env,
         jobject
 ) {

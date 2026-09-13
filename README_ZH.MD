@@ -56,7 +56,7 @@ DuckDetector 在 Android 设备上采集并关联与安全相关的证据，用�
 ```text
 Duck-Detector-Refactoring/
 ├─ app/
-│  ├─ src/main/java/com/eltavine/duckdetector/
+│  ├─ src/main/java/com/dchecker/info/
 │  │  ├─ core/            # 通用平台能力与 UI 基础设施
 │  │  ├─ features/        # 检测功能与辅助功能包
 │  │  └─ ui/              # 应用外壳、导航与主题
