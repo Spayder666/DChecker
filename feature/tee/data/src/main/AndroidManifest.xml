@@ -27,7 +27,7 @@ limitations under the License.
 
     <application>
         <service
-            android:name="com.eltavine.duckdetector.features.tee.data.verification.keystore.TeeGrantDomainGranteeService"
+            android:name="com.dchecker.info.features.tee.data.verification.keystore.TeeGrantDomainGranteeService"
             android:exported="false"
             android:isolatedProcess="true"
             tools:targetApi="oreo" />

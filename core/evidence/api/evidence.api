@@ -1,18 +1,18 @@
-public abstract interface annotation class com/eltavine/duckdetector/core/evidence/ContractValue : java/lang/annotation/Annotation {
+public abstract interface annotation class com/dchecker/info/core/evidence/ContractValue : java/lang/annotation/Annotation {
 }
 
-public final class com/eltavine/duckdetector/core/evidence/DetectionSeverity : java/lang/Enum {
-	public static final field ALL_CLEAR Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;
-	public static final field DANGER Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;
-	public static final field INFO Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;
-	public static final field WARNING Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;
+public final class com/dchecker/info/core/evidence/DetectionSeverity : java/lang/Enum {
+	public static final field ALL_CLEAR Lcom/dchecker/info/core/evidence/DetectionSeverity;
+	public static final field DANGER Lcom/dchecker/info/core/evidence/DetectionSeverity;
+	public static final field INFO Lcom/dchecker/info/core/evidence/DetectionSeverity;
+	public static final field WARNING Lcom/dchecker/info/core/evidence/DetectionSeverity;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;
-	public static fun values ()[Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dchecker/info/core/evidence/DetectionSeverity;
+	public static fun values ()[Lcom/dchecker/info/core/evidence/DetectionSeverity;
 }
 
-public final class com/eltavine/duckdetector/core/evidence/DetectorId {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/eltavine/duckdetector/core/evidence/DetectorId;
+public final class com/dchecker/info/core/evidence/DetectorId {
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/dchecker/info/core/evidence/DetectorId;
 	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
@@ -25,26 +25,26 @@ public final class com/eltavine/duckdetector/core/evidence/DetectorId {
 	public final synthetic fun unbox-impl ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/evidence/DetectorStatus {
-	public static final field Companion Lcom/eltavine/duckdetector/core/evidence/DetectorStatus$Companion;
-	public fun <init> (Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;Lcom/eltavine/duckdetector/core/evidence/InfoKind;)V
-	public synthetic fun <init> (Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;Lcom/eltavine/duckdetector/core/evidence/InfoKind;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+public final class com/dchecker/info/core/evidence/DetectorStatus {
+	public static final field Companion Lcom/dchecker/info/core/evidence/DetectorStatus$Companion;
+	public fun <init> (Lcom/dchecker/info/core/evidence/DetectionSeverity;Lcom/dchecker/info/core/evidence/InfoKind;)V
+	public synthetic fun <init> (Lcom/dchecker/info/core/evidence/DetectionSeverity;Lcom/dchecker/info/core/evidence/InfoKind;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getInfoKind ()Lcom/eltavine/duckdetector/core/evidence/InfoKind;
-	public final fun getSeverity ()Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;
+	public final fun getInfoKind ()Lcom/dchecker/info/core/evidence/InfoKind;
+	public final fun getSeverity ()Lcom/dchecker/info/core/evidence/DetectionSeverity;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/evidence/DetectorStatus$Companion {
-	public final fun allClear ()Lcom/eltavine/duckdetector/core/evidence/DetectorStatus;
-	public final fun danger ()Lcom/eltavine/duckdetector/core/evidence/DetectorStatus;
-	public final fun info (Lcom/eltavine/duckdetector/core/evidence/InfoKind;)Lcom/eltavine/duckdetector/core/evidence/DetectorStatus;
-	public final fun warning ()Lcom/eltavine/duckdetector/core/evidence/DetectorStatus;
+public final class com/dchecker/info/core/evidence/DetectorStatus$Companion {
+	public final fun allClear ()Lcom/dchecker/info/core/evidence/DetectorStatus;
+	public final fun danger ()Lcom/dchecker/info/core/evidence/DetectorStatus;
+	public final fun info (Lcom/dchecker/info/core/evidence/InfoKind;)Lcom/dchecker/info/core/evidence/DetectorStatus;
+	public final fun warning ()Lcom/dchecker/info/core/evidence/DetectorStatus;
 }
 
-public final class com/eltavine/duckdetector/core/evidence/FailureName {
-	public static final field INSTANCE Lcom/eltavine/duckdetector/core/evidence/FailureName;
+public final class com/dchecker/info/core/evidence/FailureName {
+	public static final field INSTANCE Lcom/dchecker/info/core/evidence/FailureName;
 	public final fun describe (Ljava/lang/Throwable;)Ljava/lang/String;
 	public final fun describe (Ljava/lang/Throwable;Ljava/lang/String;)Ljava/lang/String;
 	public final fun messageOrName (Ljava/lang/Throwable;)Ljava/lang/String;
@@ -52,15 +52,15 @@ public final class com/eltavine/duckdetector/core/evidence/FailureName {
 	public final fun of (Ljava/lang/Throwable;)Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/evidence/InfoKind : java/lang/Enum {
-	public static final field ERROR Lcom/eltavine/duckdetector/core/evidence/InfoKind;
-	public static final field SUPPORT Lcom/eltavine/duckdetector/core/evidence/InfoKind;
+public final class com/dchecker/info/core/evidence/InfoKind : java/lang/Enum {
+	public static final field ERROR Lcom/dchecker/info/core/evidence/InfoKind;
+	public static final field SUPPORT Lcom/dchecker/info/core/evidence/InfoKind;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lcom/eltavine/duckdetector/core/evidence/InfoKind;
-	public static fun values ()[Lcom/eltavine/duckdetector/core/evidence/InfoKind;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dchecker/info/core/evidence/InfoKind;
+	public static fun values ()[Lcom/dchecker/info/core/evidence/InfoKind;
 }
 
-public abstract interface class com/eltavine/duckdetector/core/evidence/NamedFailure {
+public abstract interface class com/dchecker/info/core/evidence/NamedFailure {
 	public abstract fun getFailureName ()Ljava/lang/String;
 }
 

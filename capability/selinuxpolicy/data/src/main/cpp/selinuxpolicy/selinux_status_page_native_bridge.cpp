@@ -78,7 +78,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_capability_selinuxpolicy_data_SelinuxStatusPageProbe_nativeProbeStatusPage(
+Java_com_dchecker_info_capability_selinuxpolicy_data_SelinuxStatusPageProbe_nativeProbeStatusPage(
         JNIEnv *env,
         jobject
 ) {

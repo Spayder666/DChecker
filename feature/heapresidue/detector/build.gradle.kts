@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.heapresidue.detector"
+    namespace = "com.dchecker.info.features.heapresidue.detector"
 }
 
 kotlin {

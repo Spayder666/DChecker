@@ -18,7 +18,7 @@
 
 A detector is a feature unit with a detector layer, feature/<name>/detector. Outside
 feature/<name>/, a file names a detector when it spells one of its packages
-(com.eltavine.duckdetector.features.<name>.), module paths (:feature:<name>:) or directories
+(com.dchecker.info.features.<name>.), module paths (:feature:<name>:) or directories
 (feature/<name>/). Only three kinds of file may do that, each listed with a reason in
 detector-touch-points.json:
 
@@ -142,7 +142,7 @@ def check(repo_root: str, policy: Policy) -> tuple[list[str], str]:
         with open(os.path.join(repo_root, relative), encoding="utf-8") as handle:
             text = handle.read()
         for detector in detectors:
-            if f"com.eltavine.duckdetector.features.{detector}.{layer}." not in text:
+            if f"com.dchecker.info.features.{detector}.{layer}." not in text:
                 errors.append(f"{relative} does not register the {detector} detector through its {layer} layer")
     for relative in sorted(policy.indexes):
         if not os.path.isfile(os.path.join(repo_root, relative)):

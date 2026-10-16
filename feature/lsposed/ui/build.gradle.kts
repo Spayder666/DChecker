@@ -21,7 +21,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.lsposed.ui"
+    namespace = "com.dchecker.info.features.lsposed.ui"
 }
 
 dependencies {

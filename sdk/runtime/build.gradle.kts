@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-import com.eltavine.duckdetector.buildlogic.DETECTOR_LAYER
-import com.eltavine.duckdetector.buildlogic.detectorModules
+import com.dchecker.info.buildlogic.DETECTOR_LAYER
+import com.dchecker.info.buildlogic.detectorModules
 
 plugins {
     id("duckdetector.android.library")
@@ -25,7 +25,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.sdk"
+    namespace = "com.dchecker.info.sdk"
 }
 
 kotlin {

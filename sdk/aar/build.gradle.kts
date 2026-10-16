@@ -22,5 +22,5 @@ plugins {
 }
 
 androidFusedLibrary {
-    namespace = "com.eltavine.duckdetector.sdk.aar"
+    namespace = "com.dchecker.info.sdk.aar"
 }

@@ -8,7 +8,7 @@ The SDK is Duck Detector without its UI: every detector, the native libraries an
 ./gradlew :sdk:aar:publish
 ```
 
-This publishes `com.eltavine.duckdetector:duckdetector-sdk:0.0.0-SNAPSHOT` to `sdk/aar/build/repository`; pass `-Pduckdetector.sdk.version=<version>` for another version. Assembling the AAR runs `verifySdkAar`, which fails if a headless module is missing from it or a UI library reaches it.
+This publishes `com.dchecker.info:duckdetector-sdk:0.0.0-SNAPSHOT` to `sdk/aar/build/repository`; pass `-Pduckdetector.sdk.version=<version>` for another version. Assembling the AAR runs `verifySdkAar`, which fails if a headless module is missing from it or a UI library reaches it.
 
 The [Nightly release](https://github.com/eltavine/Duck-Detector-Refactoring/releases/tag/nightly) also includes a commit-named SDK AAR alongside the APK. That AAR is the fused library file; use the local Maven publication above when you need its POM to resolve external dependencies.
 
@@ -39,7 +39,7 @@ dependencyResolutionManagement {
 
 // app/build.gradle.kts
 dependencies {
-    implementation("com.eltavine.duckdetector:duckdetector-sdk:0.0.0-SNAPSHOT")
+    implementation("com.dchecker.info:duckdetector-sdk:0.0.0-SNAPSHOT")
 }
 ```
 
@@ -117,7 +117,7 @@ The Mount and Virtualization detectors compare their scan with evidence captured
     android:theme="@android:style/Theme.Translucent.NoTitleBar">
     <meta-data android:name="android.app.lib_name" android:value="duckdetector" />
     <meta-data
-        android:name="com.eltavine.duckdetector.launch_activity"
+        android:name="com.dchecker.info.launch_activity"
         android:value="com.example.HomeActivity" />
     <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -126,7 +126,7 @@ The Mount and Virtualization detectors compare their scan with evidence captured
 </activity>
 ```
 
-The launcher captures the evidence, then starts the activity that `com.eltavine.duckdetector.launch_activity` names, a fully qualified class in your package, with the evidence as extras. Without that entry it starts `<applicationId>.MainActivity`, as the app's launcher does. Call `DuckDetector.captureLaunchEvidence(intent)` from that activity's `onCreate` and `onNewIntent`. Without the launcher, the Mount and Virtualization detectors report the early capture as unavailable.
+The launcher captures the evidence, then starts the activity that `com.dchecker.info.launch_activity` names, a fully qualified class in your package, with the evidence as extras. Without that entry it starts `<applicationId>.MainActivity`, as the app's launcher does. Call `DuckDetector.captureLaunchEvidence(intent)` from that activity's `onCreate` and `onNewIntent`. Without the launcher, the Mount and Virtualization detectors report the early capture as unavailable.
 
 ### Mount-view sampler
 

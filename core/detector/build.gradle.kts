@@ -21,7 +21,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.core.detector"
+    namespace = "com.dchecker.info.core.detector"
 
     // The mockable android.jar throws from every constructor by default, so tests could not
     // create the Context a detector receives.

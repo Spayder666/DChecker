@@ -230,7 +230,7 @@ jobs:
           diff -u - /tmp/scaffold-changes <<EXPECTED
            M .github/policies/native-boundaries.json
            M sdk/runtime/src/main/cpp/CMakeLists.txt
-           M sdk/runtime/src/main/kotlin/com/eltavine/duckdetector/sdk/DetectorCatalog.kt
+           M sdk/runtime/src/main/kotlin/com/dchecker/info/sdk/DetectorCatalog.kt
           ?? feature/$probe/
           EXPECTED
 

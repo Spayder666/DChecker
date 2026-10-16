@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.memory.detector"
+    namespace = "com.dchecker.info.features.memory.detector"
 }
 
 kotlin {

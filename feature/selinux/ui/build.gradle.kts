@@ -21,7 +21,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.selinux.ui"
+    namespace = "com.dchecker.info.features.selinux.ui"
 }
 
 dependencies {

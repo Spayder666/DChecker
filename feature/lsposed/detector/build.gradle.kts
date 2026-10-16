@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.lsposed.detector"
+    namespace = "com.dchecker.info.features.lsposed.detector"
 }
 
 kotlin {

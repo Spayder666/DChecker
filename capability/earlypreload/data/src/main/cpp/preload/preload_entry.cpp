@@ -34,7 +34,7 @@ namespace {
 
     constexpr std::int64_t kSecToNs = 1000000000LL;
     constexpr std::int64_t kDuplicateLaunchWindowNs = kSecToNs;
-    constexpr const char *kLaunchActivityMetaData = "com.eltavine.duckdetector.launch_activity";
+    constexpr const char *kLaunchActivityMetaData = "com.dchecker.info.launch_activity";
 
     std::int64_t g_lastHandoffNs = 0;
 

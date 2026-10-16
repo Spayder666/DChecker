@@ -23,7 +23,7 @@
 #include "nativeroot/probes/srcu_close_probe.h"
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_nativeroot_data_native_SrcuTimingNativeBridge_nativeMeasureWindow(
+Java_com_dchecker_info_features_nativeroot_data_native_SrcuTimingNativeBridge_nativeMeasureWindow(
         JNIEnv *env, jobject, jstring directory, jobject trigger) {
     if (!directory || !trigger) return nullptr;
     const char *path = env->GetStringUTFChars(directory, nullptr);

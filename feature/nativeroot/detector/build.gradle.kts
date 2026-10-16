@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.nativeroot.detector"
+    namespace = "com.dchecker.info.features.nativeroot.detector"
 }
 
 kotlin {

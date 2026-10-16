@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.mount.data"
+    namespace = "com.dchecker.info.features.mount.data"
 }
 
 dependencies {

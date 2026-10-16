@@ -158,7 +158,7 @@ ChildOutcome run_disposable_child(std::span<unsigned char> report, ChildDeadline
         .report_length = mode == "partial" ? kept - 1 : kept};
 }
 }
-extern "C" jstring Java_com_eltavine_duckdetector_capability_selinuxpolicy_data_SelinuxAvcLookupProbe_nativeCollectAvcLookup(JNIEnv *, jobject);
+extern "C" jstring Java_com_dchecker_info_capability_selinuxpolicy_data_SelinuxAvcLookupProbe_nativeCollectAvcLookup(JNIEnv *, jobject);
 static void reset(const char *test) {
     mode = test;
     // Counters start just below the 32-bit wrap, so every batch delta needs modular arithmetic.
@@ -261,7 +261,7 @@ int main() {
     const auto payload = [](const char *test) {
         reset(test);
         JNIEnv env;
-        return std::string(Java_com_eltavine_duckdetector_capability_selinuxpolicy_data_SelinuxAvcLookupProbe_nativeCollectAvcLookup(&env, nullptr));
+        return std::string(Java_com_dchecker_info_capability_selinuxpolicy_data_SelinuxAvcLookupProbe_nativeCollectAvcLookup(&env, nullptr));
     };
     const std::string one_two = payload("one_two");
     assert(one_two.starts_with("SCHEMA=1\nSTATE=COLLECTED\nSTEP=FINISHED\nERRNO=0\nUNEXPECTED_PAYLOAD=NONE\n"));

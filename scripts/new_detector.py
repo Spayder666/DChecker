@@ -41,8 +41,8 @@ import re
 import sys
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "detector_template")
-PACKAGE_ROOT = "com.eltavine.duckdetector.features"
-CATALOG = "sdk/runtime/src/main/kotlin/com/eltavine/duckdetector/sdk/DetectorCatalog.kt"
+PACKAGE_ROOT = "com.dchecker.info.features"
+CATALOG = "sdk/runtime/src/main/kotlin/com/dchecker/info/sdk/DetectorCatalog.kt"
 NATIVE_CMAKE = "sdk/runtime/src/main/cpp/CMakeLists.txt"
 NATIVE_POLICY = ".github/policies/native-boundaries.json"
 

@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.capability.earlypreload.data"
+    namespace = "com.dchecker.info.capability.earlypreload.data"
 }
 
 kotlin {

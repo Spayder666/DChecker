@@ -36,7 +36,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_tee_data_native_TeeNativeBridge_nativeCollectEnvironment(
+Java_com_dchecker_info_features_tee_data_native_TeeNativeBridge_nativeCollectEnvironment(
         JNIEnv *env,
         jobject) {
     const auto snapshot = ducktee::keystore::collect_environment();
@@ -49,7 +49,7 @@ Java_com_eltavine_duckdetector_features_tee_data_native_TeeNativeBridge_nativeCo
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_tee_data_native_TeeNativeBridge_nativeInspectTrickyStore(
+Java_com_dchecker_info_features_tee_data_native_TeeNativeBridge_nativeInspectTrickyStore(
         JNIEnv *env,
         jobject) {
     const auto snapshot = ducktee::trickystore::inspect_process();
@@ -75,7 +75,7 @@ Java_com_eltavine_duckdetector_features_tee_data_native_TeeNativeBridge_nativeIn
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_tee_data_native_TeeNativeBridge_nativeInspectLeafDer(
+Java_com_dchecker_info_features_tee_data_native_TeeNativeBridge_nativeInspectLeafDer(
         JNIEnv *env,
         jobject,
         jbyteArray leaf_der) {
@@ -100,7 +100,7 @@ Java_com_eltavine_duckdetector_features_tee_data_native_TeeNativeBridge_nativeIn
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_eltavine_duckdetector_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeIsRegisterTimerAvailable(
+Java_com_dchecker_info_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeIsRegisterTimerAvailable(
         JNIEnv *,
         jobject) {
     std::uint64_t value_ns = 0;
@@ -108,7 +108,7 @@ Java_com_eltavine_duckdetector_features_tee_data_native_TeeRegisterTimerNativeBr
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_com_eltavine_duckdetector_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeReadRegisterTimerNs(
+Java_com_dchecker_info_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeReadRegisterTimerNs(
         JNIEnv *,
         jobject) {
     std::uint64_t value_ns = 0;
@@ -119,21 +119,21 @@ Java_com_eltavine_duckdetector_features_tee_data_native_TeeRegisterTimerNativeBr
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_eltavine_duckdetector_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeBindCurrentThreadToCpu0(
+Java_com_dchecker_info_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeBindCurrentThreadToCpu0(
         JNIEnv *,
         jobject) {
     return ducktee::common::bind_current_thread_to_cpu0() ? JNI_TRUE : JNI_FALSE;
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_eltavine_duckdetector_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeRestoreCurrentThreadAffinity(
+Java_com_dchecker_info_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeRestoreCurrentThreadAffinity(
         JNIEnv *,
         jobject) {
     return ducktee::common::restore_current_thread_affinity() ? JNI_TRUE : JNI_FALSE;
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeSelectPreferredTimer(
+Java_com_dchecker_info_features_tee_data_native_TeeRegisterTimerNativeBridge_nativeSelectPreferredTimer(
         JNIEnv *env,
         jobject,
         jboolean request_cpu0_affinity) {

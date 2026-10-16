@@ -21,7 +21,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.adbruntime.ui"
+    namespace = "com.dchecker.info.features.adbruntime.ui"
 }
 
 dependencies {

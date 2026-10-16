@@ -20,7 +20,7 @@ limitations under the License.
 
     <application>
         <service
-            android:name="com.eltavine.duckdetector.capability.selinuxpolicy.data.SelinuxContextValidityCarrierService"
+            android:name="com.dchecker.info.capability.selinuxpolicy.data.SelinuxContextValidityCarrierService"
             android:exported="false"
             android:isolatedProcess="true"
             android:useAppZygote="true" />

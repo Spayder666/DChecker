@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.dangerousapps.data"
+    namespace = "com.dchecker.info.features.dangerousapps.data"
 }
 
 dependencies {

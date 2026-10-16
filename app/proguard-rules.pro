@@ -29,4 +29,4 @@
 -dontwarn com.tencent.soter.**
 
 # Native preload launches MainActivity by explicit component name before Compose starts.
--keepnames class com.eltavine.duckdetector.MainActivity
+-keepnames class com.dchecker.info.MainActivity

@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.capability.systemproperties.data"
+    namespace = "com.dchecker.info.capability.systemproperties.data"
 }
 
 kotlin {

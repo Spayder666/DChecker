@@ -46,12 +46,12 @@ class DetectorTouchPointCheckerTest(unittest.TestCase):
         for detector in ("alpha", "beta"):
             self.write(f"feature/{detector}/detector/build.gradle.kts", "")
             self.write(f"feature/{detector}/detector/src/Detector.kt",
-                       f"import com.eltavine.duckdetector.features.{detector}.data.Repository\n")
+                       f"import com.dchecker.info.features.{detector}.data.Repository\n")
         self.write("feature/dashboard/ui/build.gradle.kts", "")
-        self.write(CATALOG, "import com.eltavine.duckdetector.features.alpha.detector.AlphaDetector\n"
-                            "import com.eltavine.duckdetector.features.beta.detector.BetaDetector\n")
-        self.write(CARDS, "import com.eltavine.duckdetector.features.alpha.ui.AlphaCard\n"
-                          "import com.eltavine.duckdetector.features.beta.ui.BetaCard\n")
+        self.write(CATALOG, "import com.dchecker.info.features.alpha.detector.AlphaDetector\n"
+                            "import com.dchecker.info.features.beta.detector.BetaDetector\n")
+        self.write(CARDS, "import com.dchecker.info.features.alpha.ui.AlphaCard\n"
+                          "import com.dchecker.info.features.beta.ui.BetaCard\n")
         self.write("native/CMakeLists.txt", "set(UNITS alpha feature/alpha/data)\n")
 
     def tearDown(self) -> None:
@@ -88,7 +88,7 @@ class DetectorTouchPointCheckerTest(unittest.TestCase):
         self.assertIn("2 detectors, 2 registrations, 1 indexes, 0 exceptions", result.stdout)
 
     def test_rejects_central_code_naming_a_detector(self) -> None:
-        self.write("app/src/main/kotlin/Shell.kt", "import com.eltavine.duckdetector.features.beta.data.Probe\n")
+        self.write("app/src/main/kotlin/Shell.kt", "import com.dchecker.info.features.beta.data.Probe\n")
         self.assert_rejected("app/src/main/kotlin/Shell.kt names the beta detector outside feature/beta/")
 
     def test_rejects_module_paths_and_directories_of_a_detector(self) -> None:
@@ -97,12 +97,12 @@ class DetectorTouchPointCheckerTest(unittest.TestCase):
         self.assert_rejected("app/build.gradle.kts names the alpha detector", "scripts/tool.py names the beta detector")
 
     def test_rejects_one_detector_naming_another(self) -> None:
-        self.write("feature/beta/ui/src/Card.kt", "import com.eltavine.duckdetector.features.alpha.presentation.Model\n")
+        self.write("feature/beta/ui/src/Card.kt", "import com.dchecker.info.features.alpha.presentation.Model\n")
         self.assert_rejected("feature/beta/ui/src/Card.kt names the alpha detector outside feature/alpha/")
 
     def test_exception_allows_only_the_detectors_it_lists(self) -> None:
-        self.write("app/src/main/kotlin/Shell.kt", "import com.eltavine.duckdetector.features.alpha.data.A\n"
-                                                   "import com.eltavine.duckdetector.features.beta.data.B\n")
+        self.write("app/src/main/kotlin/Shell.kt", "import com.dchecker.info.features.alpha.data.A\n"
+                                                   "import com.dchecker.info.features.beta.data.B\n")
         self.add_exception("app/src/main/kotlin/Shell.kt", ["alpha"])
         result = self.run_checker()
         self.assertEqual(result.returncode, 1)
@@ -110,17 +110,17 @@ class DetectorTouchPointCheckerTest(unittest.TestCase):
         self.assertNotIn("Shell.kt names the alpha detector", result.stderr)
 
     def test_rejects_stale_exception(self) -> None:
-        self.write("app/src/main/kotlin/Shell.kt", "import com.eltavine.duckdetector.features.alpha.data.A\n")
+        self.write("app/src/main/kotlin/Shell.kt", "import com.dchecker.info.features.alpha.data.A\n")
         self.add_exception("app/src/main/kotlin/Shell.kt", ["alpha", "beta"])
         self.assert_rejected("exception app/src/main/kotlin/Shell.kt -> beta is stale")
 
     def test_rejects_a_registration_that_misses_a_detector(self) -> None:
-        self.write(CARDS, "import com.eltavine.duckdetector.features.alpha.ui.AlphaCard\n")
+        self.write(CARDS, "import com.dchecker.info.features.alpha.ui.AlphaCard\n")
         self.assert_rejected(f"{CARDS} does not register the beta detector through its ui layer")
 
     def test_rejects_a_registration_that_names_the_wrong_layer(self) -> None:
-        self.write(CATALOG, "import com.eltavine.duckdetector.features.alpha.detector.AlphaDetector\n"
-                            "import com.eltavine.duckdetector.features.beta.data.BetaRepository\n")
+        self.write(CATALOG, "import com.dchecker.info.features.alpha.detector.AlphaDetector\n"
+                            "import com.dchecker.info.features.beta.data.BetaRepository\n")
         self.assert_rejected(f"{CATALOG} does not register the beta detector through its detector layer")
 
     def test_rejects_missing_registration_and_index_files(self) -> None:
@@ -129,8 +129,8 @@ class DetectorTouchPointCheckerTest(unittest.TestCase):
         self.assert_rejected(f"registration {CATALOG} does not exist", "index native/CMakeLists.txt does not exist")
 
     def test_ignores_documentation_and_features_that_are_not_detectors(self) -> None:
-        self.write("docs/guide.md", "See com.eltavine.duckdetector.features.alpha.data and feature/beta/ui.\n")
-        self.write("app/src/main/kotlin/Dashboard.kt", "import com.eltavine.duckdetector.features.dashboard.ui.X\n")
+        self.write("docs/guide.md", "See com.dchecker.info.features.alpha.data and feature/beta/ui.\n")
+        self.write("app/src/main/kotlin/Dashboard.kt", "import com.dchecker.info.features.dashboard.ui.X\n")
         result = self.run_checker()
         self.assertEqual(result.returncode, 0, result.stderr)
 

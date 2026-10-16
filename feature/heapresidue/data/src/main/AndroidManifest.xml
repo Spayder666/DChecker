@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <service
-            android:name="com.eltavine.duckdetector.features.heapresidue.data.ipc.IsolatedHeapDumpService"
+            android:name="com.dchecker.info.features.heapresidue.data.ipc.IsolatedHeapDumpService"
             android:exported="false"
             android:isolatedProcess="true"
             android:process=":heap_residue" />

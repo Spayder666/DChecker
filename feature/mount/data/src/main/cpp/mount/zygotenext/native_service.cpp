@@ -42,7 +42,7 @@ constexpr int32_t kStatusOk = 0;
 constexpr int32_t kStatusUnknownTransaction = -2;
 constexpr uint32_t kCollectTransaction = 1;
 constexpr const char *kDescriptor =
-        "com.eltavine.duckdetector.features.mount.zygotenext";
+        "com.dchecker.info.features.mount.zygotenext";
 
 using BinderClassDefine = decltype(&AIBinder_Class_define);
 using BinderNew = decltype(&AIBinder_new);

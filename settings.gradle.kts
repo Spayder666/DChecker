@@ -58,7 +58,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Duck Detector"
+rootProject.name = "DChecker"
 
 // A module is a directory with a build file at its group's depth, and its Gradle path mirrors that
 // directory, so adding a detector, capability or core module never needs an edit here.

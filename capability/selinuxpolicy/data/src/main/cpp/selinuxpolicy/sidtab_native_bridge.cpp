@@ -89,7 +89,7 @@ namespace {
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_capability_selinuxpolicy_data_SelinuxSidtabProbe_nativeCollectSidtab(
+Java_com_dchecker_info_capability_selinuxpolicy_data_SelinuxSidtabProbe_nativeCollectSidtab(
         JNIEnv *env, jobject) {
     std::string payload;
     try { payload = encode(duckdetector::selinux::sidtab::collect()); }

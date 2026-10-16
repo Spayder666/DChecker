@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.core.platform"
+    namespace = "com.dchecker.info.core.platform"
 
     // The mockable android.jar throws from every constructor by default, so tests could not create
     // the platform exceptions whose names this module pins.

@@ -21,7 +21,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.core.navigation"
+    namespace = "com.dchecker.info.core.navigation"
     // MIUIX Nav 0.9.4's entry<T>() is JVM-21 inline code. Isolate that one source-level
     // requirement here; all regular Duck modules, including :app and the detector SDK, stay 17.
     compileOptions {

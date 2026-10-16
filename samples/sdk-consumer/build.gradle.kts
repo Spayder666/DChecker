@@ -20,16 +20,16 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.sample"
+    namespace = "com.dchecker.info.sample"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.eltavine.duckdetector.sample"
+        applicationId = "com.dchecker.info.sample"
         minSdk = 29
         targetSdk = 37
     }
 }
 
 dependencies {
-    implementation("com.eltavine.duckdetector:duckdetector-sdk:0.0.0-SNAPSHOT")
+    implementation("com.dchecker.info:duckdetector-sdk:0.0.0-SNAPSHOT")
 }

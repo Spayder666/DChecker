@@ -21,7 +21,7 @@ limitations under the License.
 
     <application>
         <service
-             android:name="com.eltavine.duckdetector.features.mount.data.zygotenext.ZygoteNextProbeService"
+             android:name="com.dchecker.info.features.mount.data.zygotenext.ZygoteNextProbeService"
              android:exported="false"
              android:process=":zygote_next_probe"
              android:isolatedProcess="true"

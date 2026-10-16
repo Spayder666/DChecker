@@ -21,7 +21,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.zygisk.ui"
+    namespace = "com.dchecker.info.features.zygisk.ui"
 }
 
 dependencies {

@@ -44,7 +44,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_nativeroot_data_native_ThroneHuntWatchNativeBridge_nativeInstallWatch(
+Java_com_dchecker_info_features_nativeroot_data_native_ThroneHuntWatchNativeBridge_nativeInstallWatch(
         JNIEnv *env,
         jobject,
         jstring package_directory
@@ -56,7 +56,7 @@ Java_com_eltavine_duckdetector_features_nativeroot_data_native_ThroneHuntWatchNa
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_nativeroot_data_native_ThroneHuntWatchNativeBridge_nativeDrainWatch(
+Java_com_dchecker_info_features_nativeroot_data_native_ThroneHuntWatchNativeBridge_nativeDrainWatch(
         JNIEnv *env,
         jobject,
         jint watch_descriptor
@@ -70,7 +70,7 @@ Java_com_eltavine_duckdetector_features_nativeroot_data_native_ThroneHuntWatchNa
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_eltavine_duckdetector_features_nativeroot_data_native_ThroneHuntWatchNativeBridge_nativeResetWatch(
+Java_com_dchecker_info_features_nativeroot_data_native_ThroneHuntWatchNativeBridge_nativeResetWatch(
         JNIEnv *,
         jobject,
         jint watch_descriptor

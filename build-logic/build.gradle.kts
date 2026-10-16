@@ -19,7 +19,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.eltavine.duckdetector.buildlogic"
+group = "com.dchecker.info.buildlogic"
 
 java {
     toolchain {
@@ -45,43 +45,43 @@ gradlePlugin {
     plugins {
         register("duckDetectorModuleBoundaries") {
             id = "duckdetector.module-boundaries"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.boundaries.DuckDetectorModuleBoundariesPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.boundaries.DuckDetectorModuleBoundariesPlugin"
         }
         register("duckDetectorAndroidApplication") {
             id = "duckdetector.android.application"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorAndroidApplicationConventionPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorAndroidApplicationConventionPlugin"
         }
         register("duckDetectorAndroidLibrary") {
             id = "duckdetector.android.library"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorAndroidLibraryConventionPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorAndroidLibraryConventionPlugin"
         }
         register("duckDetectorAndroidCompose") {
             id = "duckdetector.android.compose"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorAndroidComposeConventionPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorAndroidComposeConventionPlugin"
         }
         register("duckDetectorJvmLibrary") {
             id = "duckdetector.jvm.library"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorJvmLibraryConventionPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorJvmLibraryConventionPlugin"
         }
         register("duckDetectorAndroidApkArtifacts") {
             id = "duckdetector.android.apk-artifacts"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorApkArtifactsConventionPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorApkArtifactsConventionPlugin"
         }
         register("duckDetectorDependencyAnalysis") {
             id = "duckdetector.dependency-analysis"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorDependencyAnalysisPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorDependencyAnalysisPlugin"
         }
         register("duckDetectorContractValues") {
             id = "duckdetector.contract-values"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorContractValuesPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorContractValuesPlugin"
         }
         register("duckDetectorPublicApi") {
             id = "duckdetector.public-api"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.api.DuckDetectorPublicApiPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.api.DuckDetectorPublicApiPlugin"
         }
         register("duckDetectorSdkDistribution") {
             id = "duckdetector.sdk.distribution"
-            implementationClass = "com.eltavine.duckdetector.buildlogic.DuckDetectorSdkDistributionPlugin"
+            implementationClass = "com.dchecker.info.buildlogic.DuckDetectorSdkDistributionPlugin"
         }
     }
 }

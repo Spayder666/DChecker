@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.selinux.data"
+    namespace = "com.dchecker.info.features.selinux.data"
 }
 
 dependencies {

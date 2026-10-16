@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.playintegrityfix.data"
+    namespace = "com.dchecker.info.features.playintegrityfix.data"
 }
 
 dependencies {

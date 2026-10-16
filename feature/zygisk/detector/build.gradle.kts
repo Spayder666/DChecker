@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.zygisk.detector"
+    namespace = "com.dchecker.info.features.zygisk.detector"
 }
 
 kotlin {

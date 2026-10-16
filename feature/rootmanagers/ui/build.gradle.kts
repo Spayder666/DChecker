@@ -21,7 +21,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.rootmanagers.ui"
+    namespace = "com.dchecker.info.features.rootmanagers.ui"
 }
 
 dependencies {

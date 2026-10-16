@@ -21,7 +21,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.core.designsystem"
+    namespace = "com.dchecker.info.core.designsystem"
 }
 
 kotlin {

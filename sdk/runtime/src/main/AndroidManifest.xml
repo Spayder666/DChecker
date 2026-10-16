@@ -21,6 +21,6 @@ limitations under the License.
     <!-- The manifest merger gives this attribute to a host that declares none. A host with its own
          preload gets a merge conflict instead, keeps its class with tools:replace and delegates to
          DuckDetectorZygotePreload, so the SDK's app zygote work is never dropped silently. -->
-    <application android:zygotePreloadName="com.eltavine.duckdetector.sdk.DuckDetectorZygotePreload" />
+    <application android:zygotePreloadName="com.dchecker.info.sdk.DuckDetectorZygotePreload" />
 
 </manifest>

@@ -89,7 +89,7 @@ namespace {
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_capability_selinuxpolicy_data_SelinuxAvcLookupProbe_nativeCollectAvcLookup(
+Java_com_dchecker_info_capability_selinuxpolicy_data_SelinuxAvcLookupProbe_nativeCollectAvcLookup(
         JNIEnv *env, jobject) {
     std::string payload;
     try { payload = encode(collect()); }

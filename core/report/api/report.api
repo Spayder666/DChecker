@@ -1,52 +1,52 @@
-public abstract interface class com/eltavine/duckdetector/core/report/DetectorHeadline {
+public abstract interface class com/dchecker/info/core/report/DetectorHeadline {
 	public fun getFindingDetail ()Ljava/lang/String;
-	public abstract fun getStatus ()Lcom/eltavine/duckdetector/core/evidence/DetectorStatus;
+	public abstract fun getStatus ()Lcom/dchecker/info/core/evidence/DetectorStatus;
 	public abstract fun getSummary ()Ljava/lang/String;
 	public abstract fun getTitle ()Ljava/lang/String;
 	public abstract fun getVerdict ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/DetectorHeadline$DefaultImpls {
-	public static fun getFindingDetail (Lcom/eltavine/duckdetector/core/report/DetectorHeadline;)Ljava/lang/String;
+public final class com/dchecker/info/core/report/DetectorHeadline$DefaultImpls {
+	public static fun getFindingDetail (Lcom/dchecker/info/core/report/DetectorHeadline;)Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/DetectorReport {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;Ljava/util/List;Ljava/util/List;)V
+public final class com/dchecker/info/core/report/DetectorReport {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dchecker/info/core/evidence/DetectionSeverity;Ljava/util/List;Ljava/util/List;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBlocks ()Ljava/util/List;
 	public final fun getQuickFacts ()Ljava/util/List;
-	public final fun getSeverity ()Lcom/eltavine/duckdetector/core/evidence/DetectionSeverity;
+	public final fun getSeverity ()Lcom/dchecker/info/core/evidence/DetectionSeverity;
 	public final fun getTitle ()Ljava/lang/String;
 	public final fun getVerdict ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/DetectorResult {
-	public synthetic fun <init> (Ljava/lang/String;Lcom/eltavine/duckdetector/core/evidence/DetectorStatus;Lcom/eltavine/duckdetector/core/report/DetectorReport;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+public final class com/dchecker/info/core/report/DetectorResult {
+	public synthetic fun <init> (Ljava/lang/String;Lcom/dchecker/info/core/evidence/DetectorStatus;Lcom/dchecker/info/core/report/DetectorReport;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getId-YyyATdw ()Ljava/lang/String;
-	public final fun getReport ()Lcom/eltavine/duckdetector/core/report/DetectorReport;
-	public final fun getStatus ()Lcom/eltavine/duckdetector/core/evidence/DetectorStatus;
+	public final fun getReport ()Lcom/dchecker/info/core/report/DetectorReport;
+	public final fun getStatus ()Lcom/dchecker/info/core/evidence/DetectorStatus;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/DeviceReport {
-	public fun <init> (Lcom/eltavine/duckdetector/core/report/ReportDeviceIdentity;Ljava/util/List;Ljava/util/List;)V
+public final class com/dchecker/info/core/report/DeviceReport {
+	public fun <init> (Lcom/dchecker/info/core/report/ReportDeviceIdentity;Ljava/util/List;Ljava/util/List;)V
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getIdentity ()Lcom/eltavine/duckdetector/core/report/ReportDeviceIdentity;
+	public final fun getIdentity ()Lcom/dchecker/info/core/report/ReportDeviceIdentity;
 	public final fun getQuickFacts ()Ljava/util/List;
 	public final fun getSections ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract interface class com/eltavine/duckdetector/core/report/ReportBlock {
+public abstract interface class com/dchecker/info/core/report/ReportBlock {
 	public abstract fun getTitle ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/ReportBlock$Bullets : com/eltavine/duckdetector/core/report/ReportBlock {
+public final class com/dchecker/info/core/report/ReportBlock$Bullets : com/dchecker/info/core/report/ReportBlock {
 	public fun <init> (Ljava/lang/String;Ljava/util/List;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getItems ()Ljava/util/List;
@@ -55,7 +55,7 @@ public final class com/eltavine/duckdetector/core/report/ReportBlock$Bullets : c
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/ReportBlock$Rows : com/eltavine/duckdetector/core/report/ReportBlock {
+public final class com/dchecker/info/core/report/ReportBlock$Rows : com/dchecker/info/core/report/ReportBlock {
 	public fun <init> (Ljava/lang/String;Ljava/util/List;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getRows ()Ljava/util/List;
@@ -64,7 +64,7 @@ public final class com/eltavine/duckdetector/core/report/ReportBlock$Rows : com/
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/ReportBlock$Verbatim : com/eltavine/duckdetector/core/report/ReportBlock {
+public final class com/dchecker/info/core/report/ReportBlock$Verbatim : com/dchecker/info/core/report/ReportBlock {
 	public fun <init> (Ljava/lang/String;Ljava/util/List;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getLines ()Ljava/util/List;
@@ -73,7 +73,7 @@ public final class com/eltavine/duckdetector/core/report/ReportBlock$Verbatim : 
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/ReportDeviceIdentity {
+public final class com/dchecker/info/core/report/ReportDeviceIdentity {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAndroidRelease ()Ljava/lang/String;
@@ -84,7 +84,7 @@ public final class com/eltavine/duckdetector/core/report/ReportDeviceIdentity {
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/ReportFact {
+public final class com/dchecker/info/core/report/ReportFact {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getLabel ()Ljava/lang/String;
@@ -93,7 +93,7 @@ public final class com/eltavine/duckdetector/core/report/ReportFact {
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/eltavine/duckdetector/core/report/ReportRow {
+public final class com/dchecker/info/core/report/ReportRow {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z

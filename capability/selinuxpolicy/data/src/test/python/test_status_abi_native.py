@@ -131,12 +131,12 @@ ChildOutcome run_disposable_child(std::span<unsigned char> report, ChildDeadline
     return result;
 }
 }
-extern "C" jstring Java_com_eltavine_duckdetector_capability_selinuxpolicy_data_SelinuxStatusAbiProbe_nativeProbeStatusAbi(JNIEnv *, jobject);
+extern "C" jstring Java_com_dchecker_info_capability_selinuxpolicy_data_SelinuxStatusAbiProbe_nativeProbeStatusAbi(JNIEnv *, jobject);
 int main(int argc, char **argv) {
     assert(argc == 4);
     mode = argv[1]; ending = argv[2]; page = std::stol(argv[3]);
     JNIEnv env;
-    const std::string payload = Java_com_eltavine_duckdetector_capability_selinuxpolicy_data_SelinuxStatusAbiProbe_nativeProbeStatusAbi(&env, nullptr);
+    const std::string payload = Java_com_dchecker_info_capability_selinuxpolicy_data_SelinuxStatusAbiProbe_nativeProbeStatusAbi(&env, nullptr);
     if (mmap_calls == 4) {
         assert(protect_calls == 1 && close_calls == 1);
         assert(munmap_calls == (mode == "all" ? 4 : mode == "two_page" || mode == "offset" || mode == "writable" ? 2 : 1));

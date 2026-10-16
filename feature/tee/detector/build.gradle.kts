@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.features.tee.detector"
+    namespace = "com.dchecker.info.features.tee.detector"
 }
 
 kotlin {

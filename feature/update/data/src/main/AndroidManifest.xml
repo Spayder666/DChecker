@@ -20,7 +20,7 @@ limitations under the License.
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <application>
         <provider
-            android:name="com.eltavine.duckdetector.features.update.data.UpdateApkFileProvider"
+            android:name="com.dchecker.info.features.update.data.UpdateApkFileProvider"
             android:authorities="${applicationId}.update.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector.capability.helperprocess.data"
+    namespace = "com.dchecker.info.capability.helperprocess.data"
 }
 
 kotlin {

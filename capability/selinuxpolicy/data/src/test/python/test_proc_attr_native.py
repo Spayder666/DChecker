@@ -111,7 +111,7 @@ ChildOutcome run_disposable_child(std::span<unsigned char> report, ChildDeadline
         .report_length = mode == "truncated" ? 1u : static_cast<size_t>(length - (mode == "partial" ? 1 : 0))};
 }
 }
-extern "C" jstring Java_com_eltavine_duckdetector_capability_selinuxpolicy_data_SelinuxProcAttrCurrentProbe_nativeCollectProcAttr(JNIEnv *, jobject);
+extern "C" jstring Java_com_dchecker_info_capability_selinuxpolicy_data_SelinuxProcAttrCurrentProbe_nativeCollectProcAttr(JNIEnv *, jobject);
 static void reset(const char *test) {
     mode = test;
     targets_written = malformed_written = stock_written = 0;
@@ -145,7 +145,7 @@ int main() {
             result.report.writes[0][0].bytes == -2);
         reset(test);
         JNIEnv env;
-        const std::string payload = Java_com_eltavine_duckdetector_capability_selinuxpolicy_data_SelinuxProcAttrCurrentProbe_nativeCollectProcAttr(&env, nullptr);
+        const std::string payload = Java_com_dchecker_info_capability_selinuxpolicy_data_SelinuxProcAttrCurrentProbe_nativeCollectProcAttr(&env, nullptr);
         assert(payload.starts_with("SCHEMA=1\nRESULT=Controls\t\t") && payload.size() < 32768);
         assert((payload.find("CONTROLS_PASSED") != std::string::npos) == complete);
         assert((payload.find("CONTEXT_RECOGNIZED") != std::string::npos) == (mode == "recognized"));

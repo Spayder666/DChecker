@@ -37,8 +37,8 @@ SCAFFOLD = os.path.join(SCRIPTS, "new_detector.py")
 JNI_CHECKER = os.path.join(REPO, ".github", "scripts", "check-jni-contracts.py")
 EVIDENCE_CHECKER = os.path.join(REPO, ".github", "scripts", "check-evidence-records.py")
 TEXT_CHECKER = os.path.join(REPO, ".github", "scripts", "check-text-protocols.py")
-CATALOG = "sdk/runtime/src/main/kotlin/com/eltavine/duckdetector/sdk/DetectorCatalog.kt"
-FEATURES = "app/src/main/java/com/eltavine/duckdetector/ui/DetectorFeatures.kt"
+CATALOG = "sdk/runtime/src/main/kotlin/com/dchecker/info/sdk/DetectorCatalog.kt"
+FEATURES = "app/src/main/java/com/dchecker/info/ui/DetectorFeatures.kt"
 NATIVE_CMAKE = "sdk/runtime/src/main/cpp/CMakeLists.txt"
 NATIVE_POLICY = ".github/policies/native-boundaries.json"
 DETECTOR_OBJECT = re.compile(r"\bobject\s+(\w+)\s*:\s*Detector<")
@@ -130,7 +130,7 @@ class NewDetectorTest(unittest.TestCase):
     def test_the_card_is_exported_under_the_name_the_app_generates_and_imports_stay_sorted(self) -> None:
         self.assertEqual(self.scaffold("demo").returncode, 0)
 
-        feature = self.read("feature/demo/ui/src/main/kotlin/com/eltavine/duckdetector/features/demo/ui/"
+        feature = self.read("feature/demo/ui/src/main/kotlin/com/dchecker/info/features/demo/ui/"
                             "DemoDetectorFeature.kt")
         self.assertIn("\nval detectorFeature: DetectorFeature = CardDetectorFeature(DemoDetector)", feature)
         imports = [line for line in self.read(CATALOG).split("\n") if line.startswith("import ")]
@@ -139,9 +139,9 @@ class NewDetectorTest(unittest.TestCase):
     def test_names_derive_from_the_class_name(self) -> None:
         self.assertEqual(self.scaffold("playdemo", "--class-name", "PlayDemo").returncode, 0)
 
-        detector = self.read("feature/playdemo/detector/src/main/kotlin/com/eltavine/duckdetector/features/"
+        detector = self.read("feature/playdemo/detector/src/main/kotlin/com/dchecker/info/features/"
                              "playdemo/detector/PlayDemoDetector.kt")
-        mapper = self.read("feature/playdemo/presentation/src/main/kotlin/com/eltavine/duckdetector/features/"
+        mapper = self.read("feature/playdemo/presentation/src/main/kotlin/com/dchecker/info/features/"
                            "playdemo/presentation/PlayDemoCardModelMapper.kt")
         self.assertIn('DetectorId("play_demo")', detector)
         self.assertIn(" * Play Demo: looks for demo evidence.", detector)

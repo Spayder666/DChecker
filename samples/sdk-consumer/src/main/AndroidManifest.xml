@@ -29,8 +29,8 @@ limitations under the License.
                 android:name="android.app.lib_name"
                 android:value="duckdetector" />
             <meta-data
-                android:name="com.eltavine.duckdetector.launch_activity"
-                android:value="com.eltavine.duckdetector.sample.ScanActivity" />
+                android:name="com.dchecker.info.launch_activity"
+                android:value="com.dchecker.info.sample.ScanActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

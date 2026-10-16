@@ -20,7 +20,7 @@ limitations under the License.
 
     <application>
         <service
-            android:name="com.eltavine.duckdetector.features.zygisk.data.fdtrap.ZygiskFdTrapDetectorService"
+            android:name="com.dchecker.info.features.zygisk.data.fdtrap.ZygiskFdTrapDetectorService"
             android:exported="false"
             android:process=":zygisk_fd_detector" />
     </application>

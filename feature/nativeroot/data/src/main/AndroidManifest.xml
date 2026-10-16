@@ -23,7 +23,7 @@ limitations under the License.
 
     <application>
         <service
-            android:name="com.eltavine.duckdetector.features.nativeroot.data.service.SrcuTimingCarrierService"
+            android:name="com.dchecker.info.features.nativeroot.data.service.SrcuTimingCarrierService"
             android:exported="false"
             android:process=":srcu_timing" />
         <!-- The package directory watch is installed during app_zygote preload and inherited through
@@ -33,12 +33,12 @@ limitations under the License.
              type, and the filter is inert because the service is not exported. MIME groups exist
              from API 30; below it the stimulus reports itself unsupported. -->
         <service
-            android:name="com.eltavine.duckdetector.features.nativeroot.data.service.ThroneHuntCarrierService"
+            android:name="com.dchecker.info.features.nativeroot.data.service.ThroneHuntCarrierService"
             android:exported="false"
             android:isolatedProcess="true"
             android:useAppZygote="true">
             <intent-filter>
-                <action android:name="com.eltavine.duckdetector.action.THRONE_HUNT_ANCHOR" />
+                <action android:name="com.dchecker.info.action.THRONE_HUNT_ANCHOR" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 

@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-import com.eltavine.duckdetector.buildlogic.detectorModules
-import com.eltavine.duckdetector.buildlogic.generateDetectorCards
+import com.dchecker.info.buildlogic.detectorModules
+import com.dchecker.info.buildlogic.generateDetectorCards
 
 plugins {
     id("duckdetector.android.application")
@@ -24,15 +24,15 @@ plugins {
 }
 
 android {
-    namespace = "com.eltavine.duckdetector"
+    namespace = "com.dchecker.info"
 
     defaultConfig {
-        applicationId = "com.eltavine.duckdetector"
+        applicationId = "com.dchecker.info"
     }
 }
 
 // Every detector's dashboard card, discovered like the ui modules the application depends on.
-generateDetectorCards(packageName = "com.eltavine.duckdetector.ui")
+generateDetectorCards(packageName = "com.dchecker.info.ui")
 
 dependencies {
     implementation(libs.uihelper)

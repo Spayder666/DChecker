@@ -59,7 +59,7 @@ namespace {
 }  // namespace
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_selinux_data_native_SelinuxNativeAuditBridge_nativeCollectAuditSnapshot(
+Java_com_dchecker_info_features_selinux_data_native_SelinuxNativeAuditBridge_nativeCollectAuditSnapshot(
         JNIEnv *env,
         jobject
 ) {
@@ -67,7 +67,7 @@ Java_com_eltavine_duckdetector_features_selinux_data_native_SelinuxNativeAuditBr
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_eltavine_duckdetector_features_selinux_data_native_SelinuxHideTimingNativeBridge_nativeCollectTimingSnapshot(
+Java_com_dchecker_info_features_selinux_data_native_SelinuxHideTimingNativeBridge_nativeCollectTimingSnapshot(
         JNIEnv *env, jobject
 ) {
     return to_jstring(env, duckdetector::selinux::collect_attr_timing_probe());
