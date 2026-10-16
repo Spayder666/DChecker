@@ -1,5 +1,6 @@
 /*
  * Copyright 2026 Duck Apps Contributor
+ * If you have any questions, suggestions, or other inquiries, please email Eltavine <me@eltavine.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +15,13 @@
  * limitations under the License.
  */
 
-package com.dchecker.info.buildlogic
+package com.eltavine.duckdetector.buildlogic
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.variant.ApplicationAndroidComponentsExtension
-import org.gradle.api.JavaVersion
+import com.eltavine.duckdetector.buildlogic.assets.registerGeneratedAssets
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 private const val VERSION_CODE_BASE = 300
 private const val VERSION_NAME_ZONE_ID = "Asia/Singapore"
@@ -34,6 +31,9 @@ class DuckDetectorAndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.application")
         pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+        pluginManager.apply("duckdetector.module-boundaries")
+        pluginManager.apply("com.autonomousapps.dependency-analysis")
+        registerUnitTestLifecycle("testDebugUnitTest")
 
         val buildHash = providers.environmentVariable("GITHUB_SHA")
             .map { it.take(12) }
@@ -76,32 +76,19 @@ class DuckDetectorAndroidApplicationConventionPlugin : Plugin<Project> {
             ).all { !it.isNullOrBlank() }
         }
 
-        val lintBaseline = layout.projectDirectory.file("lint-baseline.xml").asFile
-
         extensions.configure<ApplicationExtension> {
-            compileSdk = requiredIntGradleProperty("duckdetector.android.compileSdk")
-            compileSdkMinor = requiredIntGradleProperty("duckdetector.android.compileSdkMinor")
-            ndkVersion = requiredGradleProperty("duckdetector.android.ndk")
-            buildToolsVersion = requiredGradleProperty("duckdetector.android.buildTools")
+            configureAndroidCommon(this)
+            // The composition root is the single lint entry point, so it must analyse every module it
+            // depends on; otherwise code moved out of :app silently leaves lint coverage.
+            lint.checkDependencies = true
 
             defaultConfig {
-                minSdk = requiredIntGradleProperty("duckdetector.android.minSdk")
                 targetSdk = requiredIntGradleProperty("duckdetector.android.targetSdk")
                 this.versionCode = versionCode.get()
                 this.versionName = versionName.get()
-                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 buildConfigField("String", "BUILD_TIME_UTC", "\"${buildTimeUtc.get()}\"")
                 buildConfigField("String", "BUILD_HASH", "\"${buildHash.get()}\"")
                 buildConfigField("boolean", "isAlphaVersion", isAlphaVersion.toString())
-            }
-
-            if (file("src/main/cpp/CMakeLists.txt").exists()) {
-                externalNativeBuild {
-                    cmake {
-                        path = file("src/main/cpp/CMakeLists.txt")
-                        version = requiredGradleProperty("duckdetector.android.cmake")
-                    }
-                }
             }
 
             signingConfigs {
@@ -131,11 +118,6 @@ class DuckDetectorAndroidApplicationConventionPlugin : Plugin<Project> {
                 }
             }
 
-            compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_17
-                targetCompatibility = JavaVersion.VERSION_17
-            }
-
             buildFeatures {
                 compose = true
                 buildConfig = true
@@ -146,108 +128,8 @@ class DuckDetectorAndroidApplicationConventionPlugin : Plugin<Project> {
                     excludes += "/META-INF/{AL2.0,LGPL2.1}"
                 }
             }
-
-            if (lintBaseline.exists()) {
-                lint {
-                    baseline = lintBaseline
-                }
-            }
         }
 
-        extensions.configure<KotlinAndroidProjectExtension> {
-            compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_17)
-            }
-        }
-
-        pluginManager.withPlugin("com.android.application") {
-            val androidComponents = extensions.getByType<ApplicationAndroidComponentsExtension>()
-            val generateGithubContributorsAsset = tasks.register(
-                "generateGithubContributorsAsset",
-                GenerateGithubContributorsAssetTask::class.java,
-            ) {
-                endpointUrl.set(
-                    providers.gradleProperty("duckdetector.githubContributors.url")
-                        .orElse(GITHUB_CONTRIBUTORS_API_URL)
-                )
-                authToken.set(
-                    providers.gradleProperty("duckdetector.githubContributors.token")
-                        .orElse(providers.environmentVariable("GITHUB_TOKEN"))
-                        .orElse(providers.environmentVariable("GH_TOKEN"))
-                )
-                maxAttempts.set(
-                    providers.gradleProperty("duckdetector.githubContributors.maxAttempts")
-                        .map(String::toInt)
-                        .orElse(4)
-                )
-                connectTimeoutMillis.set(
-                    providers.gradleProperty("duckdetector.githubContributors.connectTimeoutMillis")
-                        .map(String::toInt)
-                        .orElse(5_000)
-                )
-                readTimeoutMillis.set(
-                    providers.gradleProperty("duckdetector.githubContributors.readTimeoutMillis")
-                        .map(String::toInt)
-                        .orElse(10_000)
-                )
-                contributorsAssetFile.set(
-                    layout.projectDirectory.file("src/main/assets/$GITHUB_CONTRIBUTORS_ASSET_FILE_NAME")
-                )
-                avatarOutputDirectory.set(
-                    layout.projectDirectory.dir("src/main/assets/$GITHUB_CONTRIBUTORS_AVATAR_DIRECTORY")
-                )
-            }
-            tasks.named("preBuild").configure {
-                dependsOn(generateGithubContributorsAsset)
-            }
-            androidComponents.onVariants(androidComponents.selector().all()) { variant ->
-                val taskName = variant.computeTaskName("generate", "TeeCrlAsset")
-                val generateCrlAsset = tasks.register(
-                    taskName,
-                    GenerateTeeCrlAssetTask::class.java,
-                ) {
-                    refreshEnabled.set(
-                        providers.gradleProperty("duckdetector.teeCrl.refresh")
-                            .map(String::toBoolean)
-                            .orElse(
-                                providers.environmentVariable("DUCKDETECTOR_TEE_CRL_REFRESH")
-                                    .map(String::toBoolean)
-                            )
-                            .orElse(false)
-                    )
-                    endpointUrl.set(
-                        providers.gradleProperty("duckdetector.teeCrl.url")
-                            .orElse(TEE_CRL_STATUS_URL)
-                    )
-                    maxAttempts.set(
-                        providers.gradleProperty("duckdetector.teeCrl.maxAttempts")
-                            .map(String::toInt)
-                            .orElse(5)
-                    )
-                    connectTimeoutMillis.set(
-                        providers.gradleProperty("duckdetector.teeCrl.connectTimeoutMillis")
-                            .map(String::toInt)
-                            .orElse(5_000)
-                    )
-                    readTimeoutMillis.set(
-                        providers.gradleProperty("duckdetector.teeCrl.readTimeoutMillis")
-                            .map(String::toInt)
-                            .orElse(5_000)
-                    )
-                    fallbackAsset.set(
-                        layout.projectDirectory.file(
-                            "src/main/assets/$TEE_CRL_FALLBACK_ASSET_FILE_NAME"
-                        )
-                    )
-                    outputDirectory.set(
-                        layout.buildDirectory.dir("generated/teeCrl/${variant.name}/assets")
-                    )
-                }
-                variant.sources.assets?.addGeneratedSourceDirectory(
-                    generateCrlAsset,
-                    GenerateTeeCrlAssetTask::outputDirectory,
-                )
-            }
-        }
+        registerGeneratedAssets()
     }
 }

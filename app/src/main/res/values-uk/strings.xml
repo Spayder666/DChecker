@@ -1,5 +1,6 @@
 <!--
 Copyright 2026 Duck Apps Contributor
+If you have any questions, suggestions, or other inquiries, please email Eltavine <me@eltavine.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,8 +17,6 @@ limitations under the License.
 
 <resources>
     <string name="duck_logo_description">Логотип Duck Detector</string>
-    <string name="social_github">GitHub</string>
-    <string name="social_telegram">Telegram</string>
     <string name="user_agreement">Угода користувача</string>
     <string name="disclaimer">&amp; Відмова від відповідальності</string>
     <string name="please_read_carefully">Уважно прочитайте, перш ніж продовжити</string>
@@ -25,11 +24,11 @@ limitations under the License.
     <string name="agreement_risk_body_emphasis">Не розглядайте окремий результат як остаточний юридичний висновок, висновок щодо відповідності, гарантії чи безпеки.</string>
     <string name="agreement_risk_body_template">Duck Detector забезпечує лише опорні сигнали. %1$s Завжди поєднуйте результати програми з перевіркою вручну, попередніми доказами та власною оцінкою ризику, перш ніж вживати заходів.</string>
     <string name="user_agreement_title">Угода користувача</string>
-    <string name="user_agreement_content" formatted="false">Використовуючи Duck Detector, ви погоджуєтеся з такими умовами:&#10;&#10;1. Мета використання&#10;Ця програма призначена виключно для освітніх цілей та оцінки особистої безпеки. Це допомагає користувачам зрозуміти стан безпеки їхніх власних пристроїв.&#10;&#10;2. Без гарантії&#10;Ця програма надається &quot;як є&quot; без будь-яких гарантій, явних чи непрямих. Розробники не гарантують точність, повноту або достовірність результатів виявлення.&#10;&#10;3. Відповідальність користувача&#10;Ви несете повну відповідальність за те, як ви використовуєте цю програму, і будь-які наслідки, які можуть виникнути внаслідок її використання.&#10;&#10;4. Дотримання законів&#10;Ви погоджуєтеся використовувати цю програму відповідно до всіх відповідних місцевих, національних і міжнародних законів і правил.</string>
+    <string name="user_agreement_content" formatted="false">Використовуючи Duck Detector, ви погоджуєтеся з такими умовами:\n\n1. Мета використання\nЦя програма призначена виключно для освітніх цілей та оцінки особистої безпеки. Це допомагає користувачам зрозуміти стан безпеки їхніх власних пристроїв.\n\n2. Без гарантії\nЦя програма надається \"як є\" без будь-яких гарантій, явних чи непрямих. Розробники не гарантують точність, повноту або достовірність результатів виявлення.\n\n3. Відповідальність користувача\nВи несете повну відповідальність за те, як ви використовуєте цю програму, і будь-які наслідки, які можуть виникнути внаслідок її використання.\n\n4. Дотримання законів\nВи погоджуєтеся використовувати цю програму відповідно до всіх відповідних місцевих, національних і міжнародних законів і правил.</string>
     <string name="disclaimer_title">Відмова від відповідальності</string>
-    <string name="disclaimer_content" formatted="false">ВАЖЛИВЕ ПОВІДОМЛЕННЯ:&#10;&#10;1. Обмеження виявлення&#10;Duck Detector використовує різні методи для виявлення стану безпеки пристрою, але жоден метод виявлення не є на 100&#37; точним. Результати слід вважати індикаторами, а не остаточними оцінками.&#10;&#10;2. Помилкові спрацьовування та помилкові негативи&#10;Програма може давати хибно-позитивні або хибно-негативні результати. Завжди використовуйте професійні інструменти безпеки та власну перевірку для комплексної оцінки.&#10;&#10;3. Жодної відповідальності&#10;Розробники, учасники та розповсюджувачі Duck Detector не несуть відповідальності за будь-які прямі, непрямі, випадкові, спеціальні чи непрямі збитки, спричинені використанням або неможливістю використання цієї програми.&#10;&#10;4. Сторонні послуги&#10;Перевірки відкликання TEE за замовчуванням використовують вбудований у застосунок знімок. Якщо ви дозволите онлайн-оновлення даних відкликання, програма може зв’язатися з кінцевою точкою відкликання атестації Google. Самі сканування безпеки все ще виконуються локально на вашому пристрої, а результати детектора навмисно не завантажуються як телеметрія сканування.</string>
+    <string name="disclaimer_content" formatted="false">ВАЖЛИВЕ ПОВІДОМЛЕННЯ:\n\n1. Обмеження виявлення\nDuck Detector використовує різні методи для виявлення стану безпеки пристрою, але жоден метод виявлення не є на 100&#37; точним. Результати слід вважати індикаторами, а не остаточними оцінками.\n\n2. Помилкові спрацьовування та помилкові негативи\nПрограма може давати хибно-позитивні або хибно-негативні результати. Завжди використовуйте професійні інструменти безпеки та власну перевірку для комплексної оцінки.\n\n3. Жодної відповідальності\nРозробники, учасники та розповсюджувачі Duck Detector не несуть відповідальності за будь-які прямі, непрямі, випадкові, спеціальні чи непрямі збитки, спричинені використанням або неможливістю використання цієї програми.\n\n4. Сторонні послуги\nПеревірки відкликання TEE за замовчуванням використовують вбудований у застосунок знімок. Якщо ви дозволите онлайн-оновлення даних відкликання, програма може зв’язатися з кінцевою точкою відкликання атестації Google. Самі сканування безпеки все ще виконуються локально на вашому пристрої, а результати детектора навмисно не завантажуються як телеметрія сканування.</string>
     <string name="privacy_notice_title">Повідомлення про конфіденційність</string>
-    <string name="privacy_notice_content" formatted="false">Короткий опис конфіденційності: перевірки безпеки виконуються локально, а результати не надсилаються як телеметрія. Перевірки відкликання TEE за замовчуванням використовують вбудований знімок. Після завершення початкових налаштувань застосунок один раз за кожного холодного запуску звертається до GitHub для перевірки метаданих Nightly.</string>
+    <string name="privacy_notice_content" formatted="false">Короткий опис конфіденційності: перевірки безпеки виконуються локально, а результати не надсилаються як телеметрія. Перевірки відкликання TEE за замовчуванням використовують вбудований знімок. Після завершення початкових налаштувань застосунок один раз за кожного холодного запуску звертається до GitHub для перевірки метаданих Nightly. Якщо ввімкнути прискорення GitHub, ці запити йтимуть через сторонній сервіс gh-proxy.com.</string>
     <string name="timer_elapsed">Минуло 30 секунд</string>
     <string name="timer_waiting">Будь ласка, зачекайте %1$ds</string>
     <string name="fully_reviewed">Повністю переглянуто</string>
@@ -37,100 +36,10 @@ limitations under the License.
     <string name="i_agree_continue">Я згоден &amp; Продовжити</string>
     <string name="complete_all_conditions">Виконайте всі умови</string>
     <string name="agreement_acknowledgement">Продовжуючи, ви підтверджуєте, що прочитали ці умови та погоджуєтеся з ними.</string>
-    <string name="settings_title">Налаштування</string>
-    <string name="settings_subtitle">Керування онлайн-перевіркою та стан оновлення GitHub Nightly.</string>
-    <string name="settings_crl_title">Дозволити онлайн-оновлення CRL</string>
-    <string name="settings_crl_summary">Перевірки відкликання TEE завжди використовують вбудований знімок; цей перемикач лише дозволяє отримувати найновіший канал відкликання атестації Google.</string>
-    <string name="settings_crl_footer">Зміни негайно застосовуються до онлайн-оновлення. Вбудовані перевірки відкликання TEE залишаються ввімкненими.</string>
-    <string name="about_title">Про програму</string>
-    <string name="about_subtitle">Посилання на проект та метадані збірки.</string>
-    <string name="about_label_version">Версія</string>
-    <string name="about_value_version">%1$s (%2$d)</string>
-    <string name="about_label_website">Веб-сайт</string>
-    <string name="about_label_email">Електронна пошта</string>
-    <string name="about_label_build_time">Час збірки</string>
-    <string name="about_value_build_time">%1$s UTC</string>
-    <string name="about_label_build_hash">Хеш збірки</string>
-    <string name="about_label_privacy">Конфіденційність / Використання даних</string>
-    <string name="about_privacy_summary">Перевірки виконуються локально, результати не надсилаються. Застосунок один раз за холодного запуску звертається до GitHub по метадані Nightly. Онлайн-оновлення CRL залишається необов’язковим.</string>
-    <string name="about_label_copy_build_info">Копіювати інформацію про збірку</string>
-    <string name="about_copy_build_info_summary">Копіювати версію, час збірки та хеш збірки</string>
-    <string name="about_clipboard_label">Інформація про збірку Duck Detector</string>
-    <string name="about_clipboard_version_line">Версія: %1$s (%2$d)</string>
-    <string name="about_clipboard_build_time_line">Час збірки (UTC): %1$s UTC</string>
-    <string name="about_clipboard_build_hash_line">Хеш збірки: %1$s</string>
-    <string name="about_copy_toast">Інформацію про збірку скопійовано</string>
-    <string name="update_settings_label">Перевірити оновлення</string>
-    <string name="update_status_idle">GitHub Master Nightly перевіряється після холодного запуску; торкніться, щоб перевірити зараз</string>
-    <string name="update_status_checking">Перевірка GitHub…</string>
-    <string name="update_status_current">У вас найновіша збірка Nightly</string>
-    <string name="update_status_available">Доступна новіша збірка Nightly; торкніться для подробиць</string>
-    <string name="update_status_failed">Не вдалося перевірити GitHub; торкніться, щоб повторити</string>
-    <string name="update_dialog_title">Доступне оновлення Nightly</string>
-    <string name="update_version_change">%1$s → %2$s</string>
-    <string name="update_branch_hash_label">Гілка та коміт</string>
-    <string name="update_author_label">Автор останнього коміту</string>
-    <string name="update_time_label">Оновлено</string>
-    <string name="update_changelog_title">Зміни після вашої збірки</string>
-    <plurals name="update_remaining_commits">
-        <item quantity="one">Ще 1 коміт не показано</item>
-        <item quantity="other">Ще %1$d комітів не показано</item>
-    </plurals>
-    <string name="update_later">Пізніше</string>
-    <string name="update_view_changes">Переглянути всі зміни на GitHub</string>
-    <string name="update_download">Відкрити завантаження</string>
     <string name="update_open_failed">Немає браузера для відкриття GitHub</string>
-    <string name="tee_diagnostic_clipboard_label">Діагностичні дані TEE</string>
-    <string name="tee_diagnostic_copied_toast">Діагностичні дані скопійовано</string>
 
-    <string name="author_summary_eltavine">Зробив внесок в UI, C++, ASM та Kotlin.</string>
-    <string name="author_summary_baka">TEE та Zygisk</string>
-    <string name="author_summary_xiaotong">TEE (C++, Kotlin)</string>
-    <string name="author_summary_wxx">CI (Kotlin)</string>
-    <string name="author_summary_alex">SELinux (C++, Kotlin)</string>
-    <string name="author_summary_lingqing">TEE</string>
-    <string name="author_summary_sqmy">Kotlin</string>
-    <string name="author_summary_victor">CI</string>
-    <string name="author_summary_mirin">UI</string>
-    <string name="author_swipe_hint_single">Проведіть пальцем вліво або вправо, щоб переглянути авторів.</string>
-    <string name="author_swipe_hint_paged">Проведіть пальцем вліво або вправо, щоб переглянути авторів. %1$d/%2$d</string>
-    <string name="author_boundary_toast">Кінець списку</string>
 
-    <string name="licenses_entry_label">Прозорість</string>
-    <string name="licenses_entry_title">Бібліотеки з відкритим кодом</string>
-    <string name="licenses_entry_subtitle">Переглянути вбудовані сторонні проекти та ознайомитися з їхніми ліцензіями.</string>
-    <string name="licenses_screen_back">Назад</string>
-    <string name="licenses_screen_title">Ліцензії відкритого коду</string>
-    <string name="licenses_screen_subtitle">Сторонні компоненти, включені в цю збірку.</string>
-    <string name="licenses_inventory_title">Інвентар вбудованих бібліотек</string>
-    <string name="licenses_inventory_subtitle">Натисніть на будь-яку залежність, щоб переглянути текст ліцензії та посилання на проект.</string>
-    <string name="licenses_dialog_close">Закрити</string>
-    <string name="licenses_dialog_home_page">Домашня сторінка</string>
-    <string name="licenses_dialog_source_repo">Репозиторій коду</string>
-    <string name="licenses_dialog_version">Версія %1$s</string>
-    <string name="licenses_dialog_licenses">Ліцензії: %1$s</string>
-    <string name="licenses_dialog_open">Відкрити</string>
-    <string name="licenses_dialog_no_license_text">Текст ліцензії відсутній.</string>
 
-    <string name="alpha_title">АЛЬФА-ЗБІРКА</string>
-    <string name="alpha_banner">АЛЬФА</string>
-    <string name="alpha_message">Ця збірка є альфа-версією для тестування. Через масштабний рефакторинг C++ та асемблера можуть виникати нестабільні збої.</string>
-    <string name="alpha_warning_runtime">У цій гілці все ще можуть траплятися неочікувані помилки під час запуску або збої під час роботи.</string>
-    <string name="alpha_warning_report">Якщо ви зіткнулися з проблемою, будь ласка, повідомте про неї. Особливо корисними будуть чіткі кроки для відтворення помилки.</string>
-    <string name="alpha_warning_download">Якщо ви не знаєте, як отримати журнали збоїв (logs), завантажте AppErrorsTracking за одним із посилань нижче.</string>
-    <string name="alpha_helper">Помічник з логів збоїв: AppErrorsTracking доступний на GitHub Actions та Telegram CI.</string>
-    <string name="alpha_dismiss_ready">Тепер ви можете закрити це попередження.</string>
-    <string name="alpha_dismiss_waiting">Закриття буде доступне через %1$ds.</string>
-    <string name="alpha_continue">Я розумію, продовжити</string>
-    <string name="alpha_continue_waiting">Я розумію (%1$ds)</string>
-
-    <string name="screen_capture_title">Виявлено знімок екрана</string>
-    <string name="screen_capture_message">Якщо знімок екрана не містить детальної інформації, це питання не буде розглянуто.</string>
-    <string name="dialog_continue">Продовжити</string>
-    <string name="dialog_continue_waiting">Продовжити (%1$ds)</string>
-    <string name="detector_result_title">Перш ніж звертатися по допомогу</string>
-    <string name="detector_result_notice">Надайте повну інформацію, щоб отримати допомогу.</string>
-    <string name="detector_result_detail">Картки «Небезпека» та «Попередження» були автоматично розгорнуті для повного ознайомлення.</string>
 
     <string name="startup_review_label">Перевірка політики запуску</string>
     <string name="startup_preparing_title">Підготовка до запуску</string>
@@ -147,7 +56,6 @@ limitations under the License.
     <string name="startup_status_unsupported">Не підтримується</string>
     <string name="startup_status_waiting">Очікування</string>
     <string name="startup_status_regular">Звичайний</string>
-    <string name="startup_status_local">Локальний</string>
     <string name="startup_status_optional">Необов’язково</string>
     <string name="startup_status_acknowledged">Підтверджено</string>
     <string name="startup_status_review_later">Переглянути пізніше</string>
@@ -177,15 +85,6 @@ limitations under the License.
     <string name="startup_live_update_regular_headline">Вибрано звичайні сповіщення.</string>
     <string name="startup_live_update_regular_detail">Пріоритетні постійні сповіщення залишаються вимкненими. Замість цього прогрес сканування використовуватиме звичайний шлях сповіщень.</string>
 
-    <string name="startup_crl_title">Онлайн-оновлення CRL</string>
-    <string name="startup_crl_prompt_headline">Виберіть, чи можуть перевірки відкликання TEE отримувати онлайн-оновлення.</string>
-    <string name="startup_crl_prompt_detail">Duck Detector завжди перевіряє вбудований знімок відкликання. Дозвіл на мережу дає змогу отримувати найновіший канал відкликання атестації Google під час валідації TEE.</string>
-    <string name="startup_crl_allow_network">Дозволити оновлення</string>
-    <string name="startup_crl_local_only">Лише вбудований</string>
-    <string name="startup_crl_ready_headline">Онлайн-оновлення CRL дозволено.</string>
-    <string name="startup_crl_ready_detail">Валідація TEE перевіряє вбудований знімок і може оновлювати канал відкликання атестації Google, коли дозволяють умови мережі.</string>
-    <string name="startup_crl_local_headline">Перевірки відкликання TEE використовують вбудований знімок.</string>
-    <string name="startup_crl_local_detail">Duck Detector не виконуватиме онлайн-оновлення CRL, доки ви не ввімкнете його знову в Налаштуваннях. Вбудовані перевірки відкликання залишаються активними.</string>
 
     <string name="startup_package_manager_title">PackageManager</string>
     <string name="startup_package_restricted_headline">Інвентар пакетів виглядає обмеженим або відфільтрованим.</string>
@@ -193,8 +92,16 @@ limitations under the License.
     <string name="startup_package_continue_anyway">Продовжити у будь-якому випадку</string>
     <string name="startup_package_ack_headline">Обмежена видимість PackageManager підтверджена.</string>
     <string name="startup_package_ack_detail">Поточна кількість видимих пакетів: %1$d. Висновки щодо небезпечних програм можуть бути неповними в межах цього обсягу інвентарю.</string>
+    <string name="startup_package_unavailable_headline">Не вдалося перевірити інвентар PackageManager.</string>
+    <string name="startup_package_unavailable_detail">Запит інвентарю завершився помилкою або не містив цієї програми. Відсутність пакета в результатах вважатиметься непереконливою.</string>
     <string name="startup_package_low_inventory_headline">PackageManager виглядає повним, але видимий інвентар незвично малий.</string>
     <string name="startup_package_low_inventory_detail">Поточна кількість видимих пакетів: %1$d. Запуск продовжиться, але детектор небезпечних програм розгляне цю умову як потенційний доказ фільтрації.</string>
     <string name="startup_package_ready_headline">Інвентар PackageManager виглядає повним.</string>
     <string name="startup_package_ready_detail">Поточна кількість видимих пакетів: %1$d. Детектор небезпечних програм може використовувати стандартний шлях інвентаризації пакетів.</string>
+    <string name="navigation_home">Головна</string>
+    <string name="navigation_settings">Налаштування</string>
+    <string name="update_download_failed">Не вдалося завантажити або перевірити оновлення</string>
+    <string name="update_install_permission_required">Дозвольте встановлення з Duck Detector, а потім знову натисніть «Встановити»</string>
+    <string name="update_install_failed">Не вдалося відкрити інсталятор</string>
+    <string name="update_apk_unavailable">Завантажений файл оновлення недоступний. Завантажте його знову</string>
 </resources>

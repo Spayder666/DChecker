@@ -1,4 +1,5 @@
 # Copyright (C) 2026 Duck Apps Contributor
+# If you have any questions, suggestions, or other inquiries, please email Eltavine <me@eltavine.com>.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Build APK And Push To Telegram
+name: Build APK And SDK AAR And Push To Telegram
 
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 concurrency:
@@ -34,90 +35,17 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          submodules: true
           persist-credentials: false
 
-      - name: Read Android toolchain settings
+      - name: Set up Android build toolchain
         id: toolchain
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          from pathlib import Path
-
-          properties = {}
-          for raw_line in Path("gradle.properties").read_text(encoding="utf-8").splitlines():
-              line = raw_line.strip()
-              if not line or line.startswith("#") or "=" not in line:
-                  continue
-              key, value = line.split("=", 1)
-              properties[key.strip()] = value.strip()
-
-          mapping = {
-              "build_tools": "duckdetector.android.buildTools",
-              "cmake": "duckdetector.android.cmake",
-              "compile_sdk": "duckdetector.android.compileSdk",
-              "compile_sdk_minor": "duckdetector.android.compileSdkMinor",
-              "ndk": "duckdetector.android.ndk",
-          }
-
-          for output_name, property_name in mapping.items():
-              value = properties.get(property_name)
-              if not value:
-                  raise SystemExit(f"Missing required Gradle property: {property_name}")
-              print(f"{output_name}={value}")
-          PY
-
-      - name: Make Gradle wrapper executable
-        shell: bash
-        run: chmod +x gradlew
-
-      - name: Set up Java 17
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        uses: ./.github/actions/setup-android-build
         with:
-          distribution: temurin
-          java-version: "17"
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
-        with:
-          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
-
-      - name: Install Android SDK packages
-        shell: bash
-        env:
-          BUILD_TOOLS: ${{ steps.toolchain.outputs.build_tools }}
-          CMAKE: ${{ steps.toolchain.outputs.cmake }}
-          COMPILE_SDK: ${{ steps.toolchain.outputs.compile_sdk }}
-          COMPILE_SDK_MINOR: ${{ steps.toolchain.outputs.compile_sdk_minor }}
-          NDK: ${{ steps.toolchain.outputs.ndk }}
-        run: |
-          set -euo pipefail
-
-          packages=(
-            "platform-tools"
-            "platforms;android-${COMPILE_SDK}.${COMPILE_SDK_MINOR}"
-            "build-tools;${BUILD_TOOLS}"
-            "cmake;${CMAKE}"
-            "ndk;${NDK}"
-          )
-
-          for attempt in 1 2 3; do
-            if sdkmanager --install "${packages[@]}"; then
-              break
-            fi
-            if [ "${attempt}" -eq 3 ]; then
-              echo "Android SDK package installation failed after ${attempt} attempts." >&2
-              exit 1
-            fi
-            sleep $((attempt * 5))
-          done
+          cache-read-only: ${{ github.ref_name != github.event.repository.default_branch }}
 
       - name: Validate credentials and prepare release keystore
         id: keystore
@@ -214,7 +142,7 @@ jobs:
           echo "sha256=${expected_sha256}" >> "$GITHUB_OUTPUT"
           echo "signer_name=${signer_name}" >> "$GITHUB_OUTPUT"
 
-      - name: Build release APK
+      - name: Build release APK and SDK AAR
         id: build
         shell: bash
         env:
@@ -232,7 +160,9 @@ jobs:
             --stacktrace \
             -Pduckdetector.buildTimeUtc="${build_time_utc}" \
             -Pduckdetector.teeCrl.refresh=true \
-            :app:assembleRelease
+            -Pduckdetector.githubContributors.refresh=true \
+            :app:assembleRelease \
+            :sdk:aar:assemble
           end_time=$(date +%s)
 
           duration_seconds=$((end_time - start_time))
@@ -250,6 +180,9 @@ jobs:
         id: metadata
         shell: bash
         env:
+          ACTION_RUN_NUMBER: ${{ github.run_number }}
+          ACTION_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
           DURATION_HUMAN: ${{ steps.build.outputs.duration_human }}
           GIT_BRANCH: ${{ github.ref_name }}
           SIGNER_NAME: ${{ steps.signing_fingerprint.outputs.signer_name }}
@@ -332,37 +265,21 @@ jobs:
 
           commit_subject=$(git log -1 --pretty=%s)
           commit_author=$(git log -1 --pretty=%an)
-          commit_body=$(git log -1 --pretty=%b)
           git_hash=$(git rev-parse --short=8 HEAD)
-          caption=$(METADATA_JSON="${metadata_json}" COMMIT_SUBJECT="${commit_subject}" COMMIT_BODY="${commit_body}" COMMIT_AUTHOR="${commit_author}" DURATION_HUMAN="${DURATION_HUMAN}" GIT_BRANCH="${GIT_BRANCH}" GIT_HASH="${git_hash}" SIGNER_NAME="${SIGNER_NAME}" python3 - <<'PY'
+          caption=$(METADATA_JSON="${metadata_json}" COMMIT_SUBJECT="${commit_subject}" COMMIT_AUTHOR="${commit_author}" DURATION_HUMAN="${DURATION_HUMAN}" GIT_BRANCH="${GIT_BRANCH}" GIT_HASH="${git_hash}" SIGNER_NAME="${SIGNER_NAME}" ACTION_RUN_NUMBER="${ACTION_RUN_NUMBER}" ACTION_RUN_URL="${ACTION_RUN_URL}" COMMIT_URL="${COMMIT_URL}" python3 - <<'PY'
           import json
           import os
 
           metadata = json.loads(os.environ["METADATA_JSON"])
+          action_run_number = os.environ["ACTION_RUN_NUMBER"]
+          action_run_url = os.environ["ACTION_RUN_URL"]
           commit_subject = os.environ["COMMIT_SUBJECT"]
-          commit_body = os.environ["COMMIT_BODY"]
           commit_author = os.environ["COMMIT_AUTHOR"]
+          commit_url = os.environ["COMMIT_URL"]
           duration_human = os.environ["DURATION_HUMAN"]
           git_branch = os.environ["GIT_BRANCH"]
           git_hash = os.environ["GIT_HASH"]
           signer_name = os.environ["SIGNER_NAME"] or "Unknown signer"
-
-          def first_paragraph(text: str) -> str:
-              paragraphs = []
-              current = []
-              for raw_line in text.splitlines():
-                  line = raw_line.strip()
-                  if not line:
-                      if current:
-                          paragraphs.append(" ".join(current))
-                          current = []
-                      continue
-                  current.append(line)
-              if current:
-                  paragraphs.append(" ".join(current))
-              return paragraphs[0] if paragraphs else ""
-
-          summary = first_paragraph(commit_body)
 
           def escape_html(text: str) -> str:
               return (
@@ -371,22 +288,23 @@ jobs:
                   .replace(">", "&gt;")
               )
 
-          def render(subject: str, summary_text: str) -> str:
-              commit_block_lines = [subject]
-              if summary_text:
-                  commit_block_lines.extend(["", summary_text])
+          def escape_html_attribute(text: str) -> str:
+              return escape_html(text).replace('"', "&quot;")
 
-              commit_block = escape_html("\n".join(commit_block_lines))
-
+          def render(subject: str) -> str:
               lines = [
+                  "<b>Duck Detector Nightly</b>",
+                  "",
                   f"Version: <b>{escape_html(metadata['version_name'])} ({escape_html(metadata['version_code'])})</b>",
                   f"APK: <b>{escape_html(metadata['apk_name'])}</b>",
-                  "Commit:",
-                  f"<pre>{commit_block}</pre>",
+                  "",
+                  f'Commit: <a href="{escape_html_attribute(commit_url)}">{escape_html(git_hash)}</a>',
+                  f"<pre>{escape_html(subject)}</pre>",
                   f"Author: <b>{escape_html(commit_author)}</b>",
-                  f"Branch: <b>{escape_html(git_branch)}@{escape_html(git_hash)}</b>",
-                  f"Build time: <b>{escape_html(duration_human)}</b>",
-                  f"Signature: <b>verified : by {escape_html(signer_name)}</b>",
+                  f"Branch: <b>{escape_html(git_branch)}</b>",
+                  f'Action: <a href="{escape_html_attribute(action_run_url)}">#{escape_html(action_run_number)}</a>',
+                  f"Build duration: <b>{escape_html(duration_human)}</b>",
+                  f"Signature: <b>verified by {escape_html(signer_name)}</b>",
               ]
               return "\n".join(lines)
 
@@ -401,20 +319,14 @@ jobs:
 
           max_caption_length = 1024
 
-          caption = render(commit_subject, summary)
-          if len(caption) > max_caption_length and summary:
-              without_summary = render(commit_subject, "")
-              summary_budget = max_caption_length - len(without_summary) - 2
-              summary = truncate(summary, summary_budget)
-              caption = render(commit_subject, summary)
-
+          caption = render(commit_subject)
           if len(caption) > max_caption_length:
-              base_without_subject = render("", summary)
+              base_without_subject = render("")
               subject_budget = max_caption_length - len(base_without_subject)
               if subject_budget < 1:
                   raise SystemExit("Telegram caption template exceeds the 1024 character limit.")
               commit_subject = truncate(commit_subject, subject_budget)
-              caption = render(commit_subject, summary)
+              caption = render(commit_subject)
 
           print(caption, end="")
           PY
@@ -471,7 +383,7 @@ jobs:
         shell: bash
         env:
           APK_PATH: ${{ steps.metadata.outputs.apk_path }}
-          BUILD_TOOLS: ${{ steps.toolchain.outputs.build_tools }}
+          BUILD_TOOLS: ${{ steps.toolchain.outputs.build-tools }}
           EXPECTED_SIGNER_SHA256: ${{ steps.signing_fingerprint.outputs.sha256 }}
         run: |
           set -euo pipefail
@@ -506,8 +418,29 @@ jobs:
             exit 1
           fi
 
+      - name: Prepare SDK AAR artifact
+        id: aar
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          aar_source=sdk/aar/build/outputs/aar/aar.aar
+          if [ ! -s "$aar_source" ]; then
+            echo "SDK AAR is missing or empty: $aar_source" >&2
+            exit 1
+          fi
+          unzip -tq "$aar_source" >/dev/null
+
+          aar_name="duckdetector-sdk-${GITHUB_SHA:0:8}.aar"
+          aar_path="sdk/aar/build/outputs/aar/$aar_name"
+          cp "$aar_source" "$aar_path"
+          {
+            echo "aar_name=$aar_name"
+            echo "aar_path=$aar_path"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Upload APK artifact
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ steps.metadata.outputs.apk_name }}
           path: ${{ steps.metadata.outputs.apk_path }}
@@ -515,14 +448,23 @@ jobs:
           compression-level: 0
           retention-days: 14
 
+      - name: Upload SDK AAR artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ steps.aar.outputs.aar_name }}
+          path: ${{ steps.aar.outputs.aar_path }}
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
+
       - name: Prepare nightly release note
-        if: github.ref == 'refs/heads/master'
+        if: github.ref_name == github.event.repository.default_branch
         shell: bash
         run: |
           set -euo pipefail
 
           cat <<EOF > nightly-release-note.md
-          Nightly APK build
+          Nightly APK and SDK AAR build
 
           Commit: ${GITHUB_SHA}
           Branch: ${GITHUB_REF_NAME}
@@ -530,7 +472,7 @@ jobs:
 
       - name: Snapshot previous Nightly release assets
         id: previous_nightly_assets
-        if: github.ref == 'refs/heads/master'
+        if: github.ref_name == github.event.repository.default_branch
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -584,14 +526,14 @@ jobs:
           fi
           echo "asset_ids=${asset_ids}" >> "$GITHUB_OUTPUT"
 
-      - name: Update nightly APK release
+      - name: Update nightly APK and SDK AAR release
         id: nightly_release
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
-        if: github.ref == 'refs/heads/master'
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
+        if: github.ref_name == github.event.repository.default_branch
         with:
           tag_name: nightly
           target_commitish: ${{ github.sha }}
-          name: Nightly APK Build
+          name: Nightly APK and SDK AAR Build
           body_path: nightly-release-note.md
           prerelease: true
           make_latest: false
@@ -599,16 +541,19 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             ${{ steps.metadata.outputs.apk_path }}
+            ${{ steps.aar.outputs.aar_path }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare Nightly update manifest
         id: update_manifest
-        if: github.ref == 'refs/heads/master'
+        if: github.ref_name == github.event.repository.default_branch
         shell: bash
         env:
           APK_PATH: ${{ steps.metadata.outputs.apk_path }}
-          BUILD_BRANCH: ${{ github.ref_name }}
+          AAR_PATH: ${{ steps.aar.outputs.aar_path }}
+          # Keep publishing the legacy value until pre-migration clients have upgraded.
+          NIGHTLY_MANIFEST_BRANCH: master
           BUILD_TIME_ISO: ${{ steps.build.outputs.build_time_iso }}
           RELEASE_ASSETS_JSON: ${{ steps.nightly_release.outputs.assets }}
           VERSION_CODE: ${{ steps.metadata.outputs.version_code }}
@@ -628,17 +573,32 @@ jobs:
           apk_path = Path(os.environ["APK_PATH"])
           if not apk_path.is_file() or apk_path.stat().st_size <= 0:
               raise SystemExit(f"Release APK is missing or empty: {apk_path}")
+          aar_path = Path(os.environ["AAR_PATH"])
+          if not aar_path.is_file() or aar_path.stat().st_size <= 0:
+              raise SystemExit(f"SDK AAR is missing or empty: {aar_path}")
 
           try:
               release_assets = json.loads(os.environ["RELEASE_ASSETS_JSON"])
           except json.JSONDecodeError as exc:
               raise SystemExit(f"Release action returned invalid asset JSON: {exc}") from exc
-          if not isinstance(release_assets, list) or len(release_assets) != 1:
+          if not isinstance(release_assets, list) or len(release_assets) != 2 or any(
+              not isinstance(asset, dict) for asset in release_assets
+          ):
               raise SystemExit(
-                  f"Expected exactly one uploaded APK asset, got {len(release_assets) if isinstance(release_assets, list) else 'invalid output'}."
+                  "Expected exactly two uploaded assets: one APK and one SDK AAR."
               )
 
-          apk_asset = release_assets[0]
+          # GitHub may normalize an asset's download name (for example, spaces become dots).
+          # The release action retains the requested filename in its label in that case.
+          def matches_file(asset: dict, path: Path) -> bool:
+              return asset.get("name") == path.name or asset.get("label") == path.name
+
+          apk_assets = [asset for asset in release_assets if matches_file(asset, apk_path)]
+          aar_assets = [asset for asset in release_assets if matches_file(asset, aar_path)]
+          if len(apk_assets) != 1 or len(aar_assets) != 1:
+              raise SystemExit("Release action did not return the expected APK and SDK AAR assets.")
+          apk_asset = apk_assets[0]
+          aar_asset = aar_assets[0]
           apk_asset_id = apk_asset.get("id")
           apk_name = apk_asset.get("name", "")
           apk_url = apk_asset.get("browser_download_url", "")
@@ -657,6 +617,24 @@ jobs:
           url_name = unquote(Path(urlsplit(apk_url).path).name)
           if not apk_url.startswith(expected_prefix) or url_name != apk_name:
               raise SystemExit(f"Unexpected Nightly APK URL: {apk_url}")
+
+          aar_asset_id = aar_asset.get("id")
+          aar_name = aar_asset.get("name", "")
+          aar_url = aar_asset.get("browser_download_url", "")
+          if not isinstance(aar_asset_id, int) or aar_asset_id <= 0:
+              raise SystemExit(f"Release action returned an invalid SDK AAR asset id: {aar_asset_id!r}")
+          if aar_asset.get("state") != "uploaded":
+              raise SystemExit(f"SDK AAR release asset is not uploaded: {aar_asset.get('state')!r}")
+          if not isinstance(aar_name, str) or not aar_name.lower().endswith(".aar"):
+              raise SystemExit(f"Release action returned an invalid SDK AAR asset name: {aar_name!r}")
+          if not isinstance(aar_url, str) or not aar_url.startswith(expected_prefix) or \
+                  unquote(Path(urlsplit(aar_url).path).name) != aar_name:
+              raise SystemExit(f"Unexpected Nightly SDK AAR URL: {aar_url}")
+          aar_size = aar_path.stat().st_size
+          if aar_asset.get("size") != aar_size:
+              raise SystemExit(
+                  f"Uploaded SDK AAR size mismatch: local={aar_size}, release={aar_asset.get('size')!r}"
+              )
 
           apk_size = apk_path.stat().st_size
           remote_size = apk_asset.get("size")
@@ -683,11 +661,18 @@ jobs:
                   f"Uploaded APK digest mismatch: local=sha256:{apk_sha256}, release={remote_digest}"
               )
 
+          aar_sha256 = hashlib.sha256(aar_path.read_bytes()).hexdigest()
+          aar_remote_digest = aar_asset.get("digest")
+          if aar_remote_digest and str(aar_remote_digest).lower() != f"sha256:{aar_sha256}":
+              raise SystemExit(
+                  f"Uploaded SDK AAR digest mismatch: local=sha256:{aar_sha256}, release={aar_remote_digest}"
+              )
+
           commit_sha = git("rev-parse", "HEAD")
           manifest = {
               "schemaVersion": 1,
               "channel": "nightly",
-              "branch": os.environ["BUILD_BRANCH"],
+              "branch": os.environ["NIGHTLY_MANIFEST_BRANCH"],
               "versionName": os.environ["VERSION_NAME"],
               "versionCode": int(os.environ["VERSION_CODE"]),
               "commit": {
@@ -712,12 +697,14 @@ jobs:
           )
           with Path(os.environ["GITHUB_OUTPUT"]).open("a", encoding="utf-8") as output:
               output.write(f"apk_asset_id={apk_asset_id}\n")
+              output.write(f"aar_asset_id={aar_asset_id}\n")
+              output.write(f"aar_public_url={aar_url}\n")
           PY
 
           jq -e '
             .schemaVersion == 1 and
             .channel == "nightly" and
-            .branch == env.BUILD_BRANCH and
+            .branch == env.NIGHTLY_MANIFEST_BRANCH and
             .versionCode == (env.VERSION_CODE | tonumber) and
             .commit.sha == env.GITHUB_SHA and
             (.apk.name | test("^[^/]+\\.[Aa][Pp][Kk]$")) and
@@ -734,12 +721,12 @@ jobs:
 
       - name: Publish Nightly update manifest
         id: nightly_manifest_release
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
-        if: github.ref == 'refs/heads/master'
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
+        if: github.ref_name == github.event.repository.default_branch
         with:
           tag_name: nightly
           target_commitish: ${{ github.sha }}
-          name: Nightly APK Build
+          name: Nightly APK and SDK AAR Build
           body_path: nightly-release-note.md
           prerelease: true
           make_latest: false
@@ -751,12 +738,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Verify published Nightly assets
-        if: github.ref == 'refs/heads/master'
+        if: github.ref_name == github.event.repository.default_branch
         shell: bash
         env:
+          AAR_ASSET_ID: ${{ steps.update_manifest.outputs.aar_asset_id }}
+          AAR_NAME: ${{ steps.aar.outputs.aar_name }}
+          AAR_PATH: ${{ steps.aar.outputs.aar_path }}
           APK_ASSET_ID: ${{ steps.update_manifest.outputs.apk_asset_id }}
           APK_NAME: ${{ steps.update_manifest.outputs.apk_name }}
           APK_RELEASE_ID: ${{ steps.nightly_release.outputs.id }}
+          EXPECTED_AAR_URL: ${{ steps.update_manifest.outputs.aar_public_url }}
           EXPECTED_APK_URL: ${{ steps.update_manifest.outputs.apk_public_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MANIFEST_ASSETS_JSON: ${{ steps.nightly_manifest_release.outputs.assets }}
@@ -802,12 +793,12 @@ jobs:
             done
           }
 
-          if ! [[ "$APK_ASSET_ID" =~ ^[0-9]+$ && "$APK_RELEASE_ID" =~ ^[0-9]+$ && "$MANIFEST_RELEASE_ID" =~ ^[0-9]+$ ]]; then
+          if ! [[ "$APK_ASSET_ID" =~ ^[0-9]+$ && "$AAR_ASSET_ID" =~ ^[0-9]+$ && "$APK_RELEASE_ID" =~ ^[0-9]+$ && "$MANIFEST_RELEASE_ID" =~ ^[0-9]+$ ]]; then
             echo "Release action returned an invalid asset or release id." >&2
             exit 1
           fi
           if [ "$APK_RELEASE_ID" != "$MANIFEST_RELEASE_ID" ]; then
-            echo "APK and manifest were uploaded to different releases." >&2
+            echo "APK, SDK AAR and manifest were uploaded to different releases." >&2
             exit 1
           fi
 
@@ -841,6 +832,24 @@ jobs:
             exit 1
           fi
 
+          expected_aar_size=$(stat -c '%s' "$AAR_PATH")
+          expected_aar_digest="sha256:$(sha256sum "$AAR_PATH" | cut -d' ' -f1)"
+          aar_asset_json=$(gh_api_get "repos/${GITHUB_REPOSITORY}/releases/assets/${AAR_ASSET_ID}")
+          if ! jq -e \
+            --arg name "$AAR_NAME" \
+            --arg url "$EXPECTED_AAR_URL" \
+            --arg digest "$expected_aar_digest" \
+            --argjson size "$expected_aar_size" \
+            '.name == $name and
+             .browser_download_url == $url and
+             .state == "uploaded" and
+             .size == $size and
+             (.digest == null or (.digest | ascii_downcase) == $digest)' \
+            <<<"$aar_asset_json" >/dev/null; then
+            echo "Published SDK AAR metadata does not match the built artifact." >&2
+            exit 1
+          fi
+
           manifest_asset_json=$(gh_api_get "repos/${GITHUB_REPOSITORY}/releases/assets/${manifest_asset_id}")
           if ! jq -e '.name == "update.json" and .state == "uploaded" and .size > 0' \
             <<<"$manifest_asset_json" >/dev/null; then
@@ -857,9 +866,11 @@ jobs:
           fi
 
       - name: Delete previous Nightly release assets
-        if: github.ref == 'refs/heads/master'
+        if: github.ref_name == github.event.repository.default_branch
         shell: bash
         env:
+          AAR_ASSET_ID: ${{ steps.update_manifest.outputs.aar_asset_id }}
+          AAR_NAME: ${{ steps.aar.outputs.aar_name }}
           APK_ASSET_ID: ${{ steps.update_manifest.outputs.apk_asset_id }}
           APK_NAME: ${{ steps.update_manifest.outputs.apk_name }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -869,7 +880,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          if ! [[ "$APK_ASSET_ID" =~ ^[0-9]+$ && "$RELEASE_ID" =~ ^[0-9]+$ ]]; then
+          if ! [[ "$APK_ASSET_ID" =~ ^[0-9]+$ && "$AAR_ASSET_ID" =~ ^[0-9]+$ && "$RELEASE_ID" =~ ^[0-9]+$ ]]; then
             echo "Release action returned an invalid asset or release id." >&2
             exit 1
           fi
@@ -892,7 +903,7 @@ jobs:
 
           while IFS= read -r asset_id; do
             [ -n "$asset_id" ] || continue
-            if [ "$asset_id" = "$APK_ASSET_ID" ] || [ "$asset_id" = "$manifest_asset_id" ]; then
+            if [ "$asset_id" = "$APK_ASSET_ID" ] || [ "$asset_id" = "$AAR_ASSET_ID" ] || [ "$asset_id" = "$manifest_asset_id" ]; then
               continue
             fi
 
@@ -925,13 +936,20 @@ jobs:
               2>"$error_file"); then
               if jq -e \
                 --arg apk_name "$APK_NAME" \
+                --arg aar_name "$AAR_NAME" \
                 --argjson apk_id "$APK_ASSET_ID" \
+                --argjson aar_id "$AAR_ASSET_ID" \
                 --argjson manifest_id "$manifest_asset_id" \
                 '[.[][]] as $assets |
-                 ($assets | length) == 2 and
+                 ($assets | length) == 3 and
                  ([$assets[] | select(
                    .id == $apk_id and
                    .name == $apk_name and
+                   .state == "uploaded"
+                 )] | length) == 1 and
+                 ([$assets[] | select(
+                   .id == $aar_id and
+                   .name == $aar_name and
                    .state == "uploaded"
                  )] | length) == 1 and
                  ([$assets[] | select(
@@ -955,12 +973,12 @@ jobs:
           done
 
           if [ "$final_assets_verified" != true ]; then
-            echo "Nightly release did not converge to exactly the current APK and update.json." >&2
+            echo "Nightly release did not converge to exactly the current APK, SDK AAR and update.json." >&2
             exit 1
           fi
 
       - name: Move Nightly tag to published commit
-        if: github.ref == 'refs/heads/master'
+        if: github.ref_name == github.event.repository.default_branch
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

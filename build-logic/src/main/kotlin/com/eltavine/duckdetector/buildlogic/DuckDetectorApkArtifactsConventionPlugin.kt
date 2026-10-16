@@ -1,5 +1,6 @@
 /*
  * Copyright 2026 Duck Apps Contributor
+ * If you have any questions, suggestions, or other inquiries, please email Eltavine <me@eltavine.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.dchecker.info.buildlogic
+package com.eltavine.duckdetector.buildlogic
 
 import com.android.build.api.artifact.ArtifactTransformationRequest
 import com.android.build.api.artifact.SingleArtifact
@@ -110,12 +111,12 @@ abstract class RenameApkTask : DefaultTask() {
                 val filterSuffix = builtArtifact.filters.joinToString("-") { filter ->
                     "${filter.filterType.name.lowercase()}-${filter.identifier}"
                 }
-                "DChecker-$versionedName-$filterSuffix.apk"
+                "Duck Detector-$versionedName-$filterSuffix.apk"
             }
 
             VariantOutputConfiguration.OutputType.SINGLE,
             VariantOutputConfiguration.OutputType.UNIVERSAL -> {
-                "DChecker-$versionedName.apk"
+                "Duck Detector-$versionedName.apk"
             }
         }
     }

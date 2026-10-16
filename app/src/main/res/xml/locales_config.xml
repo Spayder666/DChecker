@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 Copyright 2026 Duck Apps Contributor
+If you have any questions, suggestions, or other inquiries, please email Eltavine <me@eltavine.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,7 +18,6 @@ limitations under the License.
 
 <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
     <locale android:name="en" />
-    <locale android:name="ru" />
     <locale android:name="zh-CN" />
     <locale android:name="zh-TW" />
     <locale android:name="ar" />
