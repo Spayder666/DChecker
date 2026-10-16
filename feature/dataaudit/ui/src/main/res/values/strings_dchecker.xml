@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"
+    tools:locale="en">
+    <string name="dataaudit_section_groups">Data groups</string>
+    <string name="dataaudit_section_scan">Scan summary</string>
+    <string name="dataaudit_view_points">View all %1$d checked points</string>
+    <string name="dataaudit_open">Open</string>
+    <string name="dataaudit_dialog_title">Checked data points</string>
+    <string name="dataaudit_dialog_subtitle">Every point read through every vantage the sandbox allows: %1$d total.</string>
+    <string name="dataaudit_search_hint">Search point or value</string>
+    <string name="dataaudit_filter_all">All</string>
+    <string name="dataaudit_close">Close</string>
+    <string name="dataaudit_refused">refused</string>
+    <string name="dataaudit_absent">absent</string>
+</resources>

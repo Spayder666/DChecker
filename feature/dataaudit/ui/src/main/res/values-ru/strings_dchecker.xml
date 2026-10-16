@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"
+    tools:locale="ru">
+    <string name="dataaudit_section_groups">Группы данных</string>
+    <string name="dataaudit_section_scan">Итоги сканирования</string>
+    <string name="dataaudit_view_points">Показать все %1$d проверенных точек</string>
+    <string name="dataaudit_open">Открыть</string>
+    <string name="dataaudit_dialog_title">Проверенные точки данных</string>
+    <string name="dataaudit_dialog_subtitle">Каждая точка прочитана всеми доступными способами: всего %1$d.</string>
+    <string name="dataaudit_search_hint">Поиск по точке или значению</string>
+    <string name="dataaudit_filter_all">Все</string>
+    <string name="dataaudit_close">Закрыть</string>
+    <string name="dataaudit_refused">отказано</string>
+    <string name="dataaudit_absent">отсутствует</string>
+</resources>

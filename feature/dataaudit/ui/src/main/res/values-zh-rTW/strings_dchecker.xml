@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"
+    tools:locale="zh-TW">
+    <string name="dataaudit_section_groups">資料分組</string>
+    <string name="dataaudit_section_scan">掃描摘要</string>
+    <string name="dataaudit_view_points">檢視全部 %1$d 個檢查點</string>
+    <string name="dataaudit_open">開啟</string>
+    <string name="dataaudit_dialog_title">已檢查資料點</string>
+    <string name="dataaudit_dialog_subtitle">每個資料點均透過所有可用途徑讀取：共 %1$d 個。</string>
+    <string name="dataaudit_search_hint">搜尋資料點或值</string>
+    <string name="dataaudit_filter_all">全部</string>
+    <string name="dataaudit_close">關閉</string>
+    <string name="dataaudit_refused">被拒絕</string>
+    <string name="dataaudit_absent">不存在</string>
+</resources>

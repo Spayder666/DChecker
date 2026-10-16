@@ -21,6 +21,7 @@ import com.dchecker.info.core.detector.Detector
 import com.dchecker.info.features.adbruntime.detector.AdbRuntimeDetector
 import com.dchecker.info.features.bootloader.detector.BootloaderDetector
 import com.dchecker.info.features.customrom.detector.CustomRomDetector
+import com.dchecker.info.features.dataaudit.detector.DataAuditDetector
 import com.dchecker.info.features.dangerousapps.detector.DangerousAppsDetector
 import com.dchecker.info.features.heapresidue.detector.HeapResidueDetector
 import com.dchecker.info.features.kernelcheck.detector.KernelCheckDetector
@@ -52,6 +53,7 @@ public object DetectorCatalog {
         AdbRuntimeDetector,
         CustomRomDetector,
         DangerousAppsDetector,
+        DataAuditDetector,
         HeapResidueDetector,
         KernelCheckDetector,
         LSPosedDetector,
