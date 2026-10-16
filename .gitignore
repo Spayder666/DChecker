@@ -21,3 +21,8 @@ __pycache__/
 commit.txt
 .buildlog.txt
 .testlog.txt
+
+/.upd*.png
+/.dv*.png
+/.shots/
+/*.png
