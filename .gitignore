@@ -19,3 +19,5 @@ __pycache__/
 /build-logic/.gradle
 /build-logic/build
 commit.txt
+.buildlog.txt
+.testlog.txt
