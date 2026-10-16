@@ -17,6 +17,8 @@
 
 package com.dchecker.info.capability.systemproperties.data
 
+import com.dchecker.info.capability.systemproperties.domain.FullPropertyNativeEntry
+import com.dchecker.info.capability.systemproperties.domain.FullPropertyNativeSnapshot
 import com.dchecker.info.capability.systemproperties.domain.PropAreaFinding
 import com.dchecker.info.capability.systemproperties.domain.SystemPropertiesNativeSnapshot
 import com.dchecker.info.core.native.NativePayloadCodec
@@ -40,6 +42,114 @@ public class SystemPropertiesNativeBridge(
             parse = ::parse,
             unavailable = { status -> SystemPropertiesNativeSnapshot(collection = status) },
         )
+    }
+
+    /**
+     * Enumerates every property through the native foreach API and reads each key through both
+     * bionic entry points plus a shell getprop pipe, for the cross-method consistency audit.
+     */
+    public fun collectFullSnapshot(): FullPropertyNativeSnapshot {
+        return collector.collect(
+            readPayload = { nativeCollectFullSnapshot() },
+            parse = ::parseFullSnapshot,
+            unavailable = { FullPropertyNativeSnapshot() },
+        )
+    }
+
+    /** Re-reads the given keys through both bionic entry points for the audit stability pass. */
+    public fun readInlineSnapshot(
+        propertyNames: Collection<String>,
+    ): Map<String, FullPropertyNativeEntry> {
+        if (propertyNames.isEmpty()) {
+            return emptyMap()
+        }
+        return collector.collect(
+            readPayload = {
+                nativeReadInlineSnapshot(propertyNames.distinct().sorted().toTypedArray())
+            },
+            parse = ::parseInlineSnapshot,
+            unavailable = { emptyMap() },
+        )
+    }
+
+    internal fun parseFullSnapshot(
+        raw: String,
+    ): FullPropertyNativeSnapshot {
+        if (raw.isBlank()) {
+            return FullPropertyNativeSnapshot()
+        }
+
+        var foreachAvailable = false
+        var totalCount = 0
+        var shellAvailable = false
+        val entries = linkedMapOf<String, FullPropertyNativeEntry>()
+        val shellProperties = linkedMapOf<String, String>()
+
+        raw.lineSequence()
+            .map { it.trim() }
+            .filter { it.isNotEmpty() && it.contains('=') }
+            .forEach { line ->
+                val key = line.substringBefore('=')
+                val value = line.substringAfter('=')
+                when (key) {
+                    "FOREACH_AVAILABLE" -> foreachAvailable = value != "0"
+                    "TOTAL_COUNT" -> totalCount = value.toIntOrNull() ?: 0
+                    "SHELL_AVAILABLE" -> shellAvailable = value != "0"
+                    "ENTRY" -> {
+                        val parts = value.split('|', limit = 3)
+                        if (parts.size == 3 && parts[0].isNotBlank()) {
+                            entries[parts[0]] = FullPropertyNativeEntry(
+                                key = parts[0],
+                                callbackValue = parts[1].decodeValue(),
+                                legacyValue = parts[2].decodeValue(),
+                            )
+                        }
+                    }
+
+                    "SHELL" -> {
+                        val parts = value.split('|', limit = 2)
+                        if (parts.size == 2 && parts[0].isNotBlank()) {
+                            shellProperties[parts[0]] = parts[1].decodeValue()
+                        }
+                    }
+                }
+            }
+
+        return FullPropertyNativeSnapshot(
+            foreachAvailable = foreachAvailable,
+            totalCount = if (totalCount > 0) totalCount else entries.size,
+            shellAvailable = shellAvailable,
+            entries = entries,
+            shellProperties = shellProperties,
+        )
+    }
+
+    internal fun parseInlineSnapshot(
+        raw: String,
+    ): Map<String, FullPropertyNativeEntry> {
+        if (raw.isBlank()) {
+            return emptyMap()
+        }
+        val entries = linkedMapOf<String, FullPropertyNativeEntry>()
+        raw.lineSequence()
+            .map { it.trim() }
+            .filter { it.isNotEmpty() && it.contains('=') }
+            .forEach { line ->
+                val key = line.substringBefore('=')
+                val value = line.substringAfter('=')
+                if (key != "INLINE") {
+                    return@forEach
+                }
+                val parts = value.split('|', limit = 3)
+                if (parts.size == 3 && parts[0].isNotBlank()) {
+                    entries[parts[0]] = FullPropertyNativeEntry(
+                        key = parts[0],
+                        callbackValue = parts[1].decodeValue(),
+                        legacyValue = parts[2].decodeValue(),
+                    )
+                }
+            }
+        return entries
     }
 
     internal fun parse(
@@ -135,4 +245,8 @@ public class SystemPropertiesNativeBridge(
     private fun String.decodeValue(): String = NativePayloadCodec.decodeValue(this)
 
     private external fun nativeCollectSnapshot(propertyNames: Array<String>): String
+
+    private external fun nativeCollectFullSnapshot(): String
+
+    private external fun nativeReadInlineSnapshot(propertyNames: Array<String>): String
 }

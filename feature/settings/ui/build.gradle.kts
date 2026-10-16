@@ -25,6 +25,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.appcompat)
     api(libs.uihelper)
     implementation(libs.miuix.ui)
     api(project(":core:ui"))

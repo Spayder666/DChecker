@@ -41,6 +41,10 @@ class SystemPropertiesCardModelMapper {
             impactItems = buildImpactItems(report),
             methodRows = buildMethodRows(report),
             scanRows = buildScanRows(report),
+            auditRows = buildAuditRows(report),
+            auditMismatches = buildAuditMismatches(report),
+            auditAvailable = report.fullAudit.checkedCount > 0,
+            auditCheckedCount = report.fullAudit.checkedCount,
         )
     }
 }

@@ -13,9 +13,9 @@
   Summary        : Start with   Padded value 0   and key = value 0.
 
   Scan Statistics:
-    [✖] Danger   : 2
-    [▲] Warning  : 0
-    [✔] Ready    : 12
+    [✖] Danger   : 3
+    [▲] Warning  : 2
+    [✔] Ready    : 15
     [·] Pending  : 3
 
 --------------------------------------------------------------------------------
@@ -31,11 +31,15 @@
     Details  :
       Summary for key = value 0
 
-  [ℹ INFO]   Padded value 0  
-    Headline : 
+  [✖ DANGER] Value 0
+    Headline : A long detail line that deliberately exceeds sixty characters in length 2
     Details  :
-      Summary for   Padded value 0
+      Summary for Value 0
 
+
+--------------------------------------------------------------------------------
+  [▲ WARNING] 
+  Verdict      : left | right 2
 
 --------------------------------------------------------------------------------
   [✖ DANGER] key = value 0
@@ -154,6 +158,29 @@ Line two 13
          (key = value 24)
     • left | right 28 (1):
         left | right 26 (A long detail line that deliberately exceeds sixty characters in length 27)
+
+--------------------------------------------------------------------------------
+  [✖ DANGER] Value 0
+  Verdict      : A long detail line that deliberately exceeds sixty characters in length 2
+
+  [Signals]
+    •    : Line one 5
+Line two 5
+
+  Line three
+        key = value 6
+    •   Padded value 7  : Line one 8
+Line two 8
+
+  Line three
+    •    : Unicode ✓ détail 11
+
+  [Scan]
+    • A long detail line that deliberately exceeds sixty characters in length 13: Value 14 (Value 15)
+    • Line one 16
+Line two 16
+
+  Line three  : left | right 17
 
 --------------------------------------------------------------------------------
   [ℹ INFO] left | right 0
@@ -383,6 +410,10 @@ Line two 27
 
   [Impact & Guidance]
     • A long detail line that deliberately exceeds sixty characters in length 16
+
+--------------------------------------------------------------------------------
+  [▲ WARNING] 
+  Verdict      :   Padded value 2  
 
 --------------------------------------------------------------------------------
   [ℹ INFO] Unicode ✓ détail 0
@@ -678,7 +709,7 @@ Line two 7
   Scan Statistics:
     [✖] Danger   : 3
     [▲] Warning  : 4
-    [✔] Ready    : 12
+    [✔] Ready    : 15
     [·] Pending  : 3
 
 --------------------------------------------------------------------------------
@@ -702,6 +733,32 @@ Line two 2
     Details  :
       Summary for Value 0
 
+
+--------------------------------------------------------------------------------
+  [ℹ INFO]   Padded value 0  
+  Verdict      : Line one 2
+Line two 2
+
+  Line three  
+
+  [Inconsistencies]
+    • Line one 4
+Line two 4
+
+  Line three  
+    • left | right 7: Unicode ✓ détail 8
+        Line one 9
+        Line two 9
+          Line three
+    •    
+        key = value 12
+
+  [Sources]
+    • Line one 13
+Line two 13
+
+  Line three  : Value 14
+    •   Padded value 16  : Value 17 (Value 18)
 
 --------------------------------------------------------------------------------
   [✔ CLEAR] Line one 0
@@ -851,6 +908,24 @@ Line two 18
 Line two 41
 
   Line three  )
+
+--------------------------------------------------------------------------------
+  [ℹ INFO]    
+  Verdict      : 
+
+  [Signals]
+    •    : left | right 5
+        left | right 6
+    • Unicode ✓ détail 7
+        key = value 9
+
+  [Scan]
+    • : Padded value 11 (Value 12)
+    • : Unicode ✓ détail 14 (Padded value 15)
+    • Value 16: Padded value 17
+        Line one 18
+        Line two 18
+          Line three
 
 --------------------------------------------------------------------------------
   [✔ CLEAR] 
@@ -1173,6 +1248,27 @@ Line two 46
     • Line one 33
       Line two 33
         Line three
+
+--------------------------------------------------------------------------------
+  [ℹ INFO] left | right 0
+  Verdict      : 
+
+  [Matched root managers]
+    • A long detail line that deliberately exceeds sixty characters in length 4: A long detail line that deliberately exceeds sixty characters in length 5 (Unicode ✓ détail 6)
+    • key = value 8: Padded value 9 (Padded value 10)
+    •   Padded value 12  : left | right 13
+        left | right 14
+
+  [Profiles]
+    •    : key = value 17
+    • : A long detail line that deliberately exceeds sixty characters in length 21 (Padded value 22)
+
+  [Scan]
+    • left | right 24: key = value 25 (Unicode ✓ détail 26)
+    • Line one 28
+Line two 28
+
+  Line three  : Padded value 29 (Unicode ✓ détail 30)
 
 --------------------------------------------------------------------------------
   [✖ DANGER] Value 0
@@ -1620,12 +1716,12 @@ Line two 19
   EXECUTIVE SUMMARY
 --------------------------------------------------------------------------------
   Overall Status : [✖ DANGER] Danger
-  Summary        : Start with   Padded value 0   and    .
+  Summary        : Start with   Padded value 0   and .
 
   Scan Statistics:
-    [✖] Danger   : 1
-    [▲] Warning  : 3
-    [✔] Ready    : 12
+    [✖] Danger   : 2
+    [▲] Warning  : 5
+    [✔] Ready    : 15
     [·] Pending  : 3
 
 --------------------------------------------------------------------------------
@@ -1636,16 +1732,28 @@ Line two 19
     Details  :
       Summary for   Padded value 0
 
-  [▲ WARNING]    
-    Headline :   Padded value 2  
+  [✖ DANGER] 
+    Headline : Value 2
     Details  :
       Summary for
 
-  [▲ WARNING]   Padded value 0  
-    Headline : A long detail line that deliberately exceeds sixty characters in length 2
+  [▲ WARNING] 
+    Headline : Value 2
     Details  :
-      Summary for   Padded value 0
+      Summary for
 
+
+--------------------------------------------------------------------------------
+  [▲ WARNING] Value 0
+  Verdict      : A long detail line that deliberately exceeds sixty characters in length 2
+
+  [Inconsistencies]
+    • Value 4
+        Value 6
+
+  [Sources]
+    •    : Unicode ✓ détail 8
+        key = value 9
 
 --------------------------------------------------------------------------------
   [ℹ INFO] Unicode ✓ détail 0
@@ -1767,6 +1875,16 @@ Line two 25
 Line two 27
 
   Line three   (left | right 28)
+
+--------------------------------------------------------------------------------
+  [✖ DANGER] 
+  Verdict      : Value 2
+
+  [Scan]
+    •    : Line one 5
+Line two 5
+
+  Line three
 
 --------------------------------------------------------------------------------
   [ℹ INFO] left | right 0
@@ -2039,6 +2157,23 @@ Line two 20
     • Padded value 15
 
 --------------------------------------------------------------------------------
+  [▲ WARNING] 
+  Verdict      : Value 2
+
+  [Profiles]
+    • 
+    • Line one 8
+Line two 8
+
+  Line three  : A long detail line that deliberately exceeds sixty characters in length 9
+        left | right 10
+    • Line one 12
+Line two 12
+
+  Line three  : Value 13
+        left | right 14
+
+--------------------------------------------------------------------------------
   [ℹ INFO] Unicode ✓ détail 0
   Verdict      : 
   Quick Facts  : Mode: 
@@ -2264,15 +2399,12 @@ Line two 13
   EXECUTIVE SUMMARY
 --------------------------------------------------------------------------------
   Overall Status : [✖ DANGER] Danger
-  Summary        : Start with  and Line one 0
-Line two 0
-
-  Line three  .
+  Summary        : Start with  and A long detail line that deliberately exceeds sixty characters in length 0.
 
   Scan Statistics:
-    [✖] Danger   : 5
-    [▲] Warning  : 1
-    [✔] Ready    : 12
+    [✖] Danger   : 6
+    [▲] Warning  : 2
+    [✔] Ready    : 15
     [·] Pending  : 3
 
 --------------------------------------------------------------------------------
@@ -2282,6 +2414,14 @@ Line two 0
     Headline : 
     Details  :
       Summary for
+
+  [✖ DANGER] A long detail line that deliberately exceeds sixty characters in length 0
+    Headline : Line one 2
+Line two 2
+
+  Line three  
+    Details  :
+      Summary for A long detail line that deliberately exceeds sixty characters in length 0
 
   [✖ DANGER] Line one 0
 Line two 0
@@ -2293,14 +2433,21 @@ Line two 0
       Line two 0
         Line three
 
-  [✖ DANGER] Value 0
-    Headline : Line one 2
-Line two 2
 
-  Line three  
-    Details  :
-      Summary for Value 0
+--------------------------------------------------------------------------------
+  [▲ WARNING] 
+  Verdict      : key = value 2
 
+  [Inconsistencies]
+    • Unicode ✓ détail 4: A long detail line that deliberately exceeds sixty characters in length 5 (Padded value 6)
+    • : key = value 8
+        A long detail line that deliberately exceeds sixty characters in length 9
+    • key = value 10: key = value 11
+
+  [Sources]
+    • Unicode ✓ détail 13: key = value 14
+        key = value 15
+    • key = value 16: key = value 17 (Padded value 18)
 
 --------------------------------------------------------------------------------
   [✔ CLEAR] A long detail line that deliberately exceeds sixty characters in length 0
@@ -2473,6 +2620,33 @@ Line two 32
         Unicode ✓ détail 34 (left | right 35)
     •   Padded value 39   (1):
         A long detail line that deliberately exceeds sixty characters in length 37 (A long detail line that deliberately exceeds sixty characters in length 38)
+
+--------------------------------------------------------------------------------
+  [✖ DANGER] Value 0
+  Verdict      : 
+
+  [Signals]
+    • key = value 4
+        Unicode ✓ détail 6
+    •   Padded value 7  : Padded value 8 (Padded value 9)
+
+  [Scan]
+    • Line one 10
+Line two 10
+
+  Line three  : left | right 11 (Value 12)
+    • Line one 13
+Line two 13
+
+  Line three  : Line one 14
+Line two 14
+
+  Line three (Value 15)
+    • Line one 16
+Line two 16
+
+  Line three  
+        key = value 18
 
 --------------------------------------------------------------------------------
   [✔ CLEAR]   Padded value 0  
@@ -2836,6 +3010,31 @@ Line two 42
     • Line one 26
       Line two 26
         Line three
+
+--------------------------------------------------------------------------------
+  [✔ CLEAR] A long detail line that deliberately exceeds sixty characters in length 0
+  Verdict      : 
+
+  [Matched root managers]
+    • left | right 4: Unicode ✓ détail 5
+        key = value 6
+    • Unicode ✓ détail 8: Unicode ✓ détail 9
+        A long detail line that deliberately exceeds sixty characters in length 10
+    • Line one 12
+Line two 12
+
+  Line three  : Padded value 13
+
+  [Profiles]
+    • left | right 16: left | right 17
+    • key = value 20
+        Value 22
+
+  [Scan]
+    • A long detail line that deliberately exceeds sixty characters in length 24: Value 25
+    •    : left | right 29 (Unicode ✓ détail 30)
+    • Value 32: left | right 33
+        A long detail line that deliberately exceeds sixty characters in length 34
 
 --------------------------------------------------------------------------------
   [ℹ INFO] 

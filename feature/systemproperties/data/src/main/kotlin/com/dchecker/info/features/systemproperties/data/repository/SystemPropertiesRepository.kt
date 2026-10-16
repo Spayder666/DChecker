@@ -24,7 +24,13 @@ import com.dchecker.info.capability.systemproperties.domain.SystemPropertyCatego
 import com.dchecker.info.capability.systemproperties.domain.SystemPropertySignal
 import com.dchecker.info.capability.systemproperties.domain.SystemPropertySource
 import com.dchecker.info.core.detector.DetectorScanner
+import com.dchecker.info.features.systemproperties.data.audit.AuditBuildConstants
+import com.dchecker.info.features.systemproperties.data.audit.FullPropertyAuditComparator
 import com.dchecker.info.features.systemproperties.data.rules.SystemPropertiesCatalog
+import com.dchecker.info.features.systemproperties.domain.FullPropertyAudit
+import com.dchecker.info.features.systemproperties.domain.PropertyAuditMethod
+import com.dchecker.info.features.systemproperties.domain.PropertyDivergence
+import com.dchecker.info.features.systemproperties.domain.PropertyDivergenceKind
 import com.dchecker.info.features.systemproperties.domain.SystemPropertiesReport
 import com.dchecker.info.features.systemproperties.domain.SystemPropertiesStage
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +41,9 @@ class SystemPropertiesRepository(
     private val consistencyUtils: SystemPropertyConsistencyUtils = SystemPropertyConsistencyUtils(),
 ) : DetectorScanner<SystemPropertiesReport> {
     private val propertyAreaMtimeProbe = PropertyAreaMtimeProbe()
+
+    // Shares the read-utils getprop snapshot cache with the rest of the scan.
+    private val fullAuditComparator by lazy { FullPropertyAuditComparator(readUtils) }
 
     override suspend fun scan(): SystemPropertiesReport = withContext(Dispatchers.IO) {
         runCatching { scanInternal() }
@@ -93,11 +102,21 @@ class SystemPropertiesRepository(
         )
         val propAreaSignals = buildPropAreaSignals(nativeSnapshot)
 
+        val fullAudit = runCatching {
+            fullAuditComparator.audit(
+                nativeSnapshot = readUtils.collectFullNativeSnapshot(),
+                getpropSnapshot = readUtils.fullGetpropSnapshot(),
+                buildConstants = AuditBuildConstants.fromBuild(),
+            )
+        }.getOrDefault(FullPropertyAudit())
+        val fullAuditSignals = fullAudit.divergences.map(::buildFullAuditSignal)
+
         val propertySignals =
             ruleSignals +
                     buildSignals +
                     sourceSignals +
-                    consistencySignals
+                    consistencySignals +
+                    fullAuditSignals
         if (
             propertySignals.isEmpty() &&
             propAreaSignals.isEmpty() &&
@@ -138,6 +157,7 @@ class SystemPropertiesRepository(
             propAreaAvailable = nativeSnapshot.propAreaAvailable,
             propAreaContextCount = nativeSnapshot.propAreaContextCount,
             propAreaHoleCount = nativeSnapshot.propAreaHoleCount,
+            fullAudit = fullAudit,
             methods = buildMethods(
                 ruleSignals = ruleSignals,
                 infoSignals = infoSignals,
@@ -154,9 +174,66 @@ class SystemPropertiesRepository(
                 propAreaAvailable = nativeSnapshot.propAreaAvailable,
                 propAreaContextCount = nativeSnapshot.propAreaContextCount,
                 propAreaHoleCount = nativeSnapshot.propAreaHoleCount,
+                fullAudit = fullAudit,
             ),
             propertyAreaMtimes = propertyAreaMtimeProbe.read(),
         )
+    }
+
+    internal fun buildFullAuditSignal(
+        divergence: PropertyDivergence,
+    ): SystemPropertySignal {
+        return SystemPropertySignal(
+            property = divergence.property,
+            description = fullAuditKindLabel(divergence.kind),
+            value = "Diverged",
+            category = SystemPropertyCategory.FULL_AUDIT,
+            severity = divergence.severity,
+            source = divergence.methodValues.keys.firstNotNullOfOrNull(::auditMethodSource)
+                ?: SystemPropertySource.NATIVE_LIBC,
+            detail = divergence.methodValues.entries.joinToString(separator = "\n") { (method, value) ->
+                "${auditMethodLabel(method)}: $value"
+            },
+        )
+    }
+
+    private fun fullAuditKindLabel(
+        kind: PropertyDivergenceKind,
+    ): String {
+        return when (kind) {
+            PropertyDivergenceKind.JAVA_VS_NATIVE -> "Java and native reads disagree"
+            PropertyDivergenceKind.NATIVE_VS_NATIVE -> "Native read paths disagree"
+            PropertyDivergenceKind.SHELL_VS_INLINE -> "Shell and in-process reads disagree"
+            PropertyDivergenceKind.FRAMEWORK_VS_PROPERTY -> "Framework constant disagrees with property"
+        }
+    }
+
+    private fun auditMethodLabel(
+        method: PropertyAuditMethod,
+    ): String {
+        return when (method) {
+            PropertyAuditMethod.JAVA_REFLECTION -> "Java reflection"
+            PropertyAuditMethod.JVM_GETPROP -> "getprop (JVM)"
+            PropertyAuditMethod.JVM_PROPERTY -> "System.getProperty"
+            PropertyAuditMethod.NATIVE_CALLBACK -> "Native callback"
+            PropertyAuditMethod.NATIVE_LEGACY -> "Native legacy get"
+            PropertyAuditMethod.NATIVE_SHELL -> "Native shell getprop"
+            PropertyAuditMethod.BUILD_CONSTANT -> "Build constant"
+        }
+    }
+
+    private fun auditMethodSource(
+        method: PropertyAuditMethod,
+    ): SystemPropertySource? {
+        return when (method) {
+            PropertyAuditMethod.JAVA_REFLECTION -> SystemPropertySource.REFLECTION
+            PropertyAuditMethod.JVM_GETPROP -> SystemPropertySource.GETPROP
+            PropertyAuditMethod.JVM_PROPERTY -> SystemPropertySource.JVM
+            PropertyAuditMethod.NATIVE_CALLBACK -> SystemPropertySource.NATIVE_LIBC
+            PropertyAuditMethod.NATIVE_LEGACY -> SystemPropertySource.NATIVE_LIBC
+            PropertyAuditMethod.NATIVE_SHELL -> SystemPropertySource.NATIVE_LIBC
+            PropertyAuditMethod.BUILD_CONSTANT -> SystemPropertySource.BUILD
+        }
     }
 
     private fun infoCategory(

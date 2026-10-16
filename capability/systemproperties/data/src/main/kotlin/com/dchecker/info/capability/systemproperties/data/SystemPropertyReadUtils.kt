@@ -17,6 +17,8 @@
 
 package com.dchecker.info.capability.systemproperties.data
 
+import com.dchecker.info.capability.systemproperties.domain.FullPropertyNativeEntry
+import com.dchecker.info.capability.systemproperties.domain.FullPropertyNativeSnapshot
 import com.dchecker.info.capability.systemproperties.domain.MultiSourcePropertyRead
 import com.dchecker.info.capability.systemproperties.domain.SystemPropertiesNativeSnapshot
 import com.dchecker.info.capability.systemproperties.domain.SystemPropertyCategory
@@ -24,15 +26,53 @@ import com.dchecker.info.capability.systemproperties.domain.SystemPropertySource
 import com.dchecker.info.core.platform.HiddenSystemProperties
 import java.util.concurrent.TimeUnit
 
+/**
+ * Read port consumed by the full property audit. Splitting it from the utils class keeps the
+ * audit comparator unit-testable with canned reads.
+ */
+public interface PropertyReadAccess {
+    public fun readReflectionValue(property: String): String
+
+    public fun readJvmValue(property: String): String
+
+    public fun readInlineNativeEntry(property: String): FullPropertyNativeEntry?
+}
+
 public class SystemPropertyReadUtils(
     private val nativeBridge: SystemPropertiesNativeBridge = SystemPropertiesNativeBridge(),
-) {
+) : PropertyReadAccess {
     private var getpropSnapshot: Map<String, String>? = null
 
     public fun collectNativeSnapshot(
         propertyNames: Collection<String>,
     ): SystemPropertiesNativeSnapshot {
         return nativeBridge.collectSnapshot(propertyNames)
+    }
+
+    public fun collectFullNativeSnapshot(): FullPropertyNativeSnapshot {
+        return nativeBridge.collectFullSnapshot()
+    }
+
+    public fun fullGetpropSnapshot(): Map<String, String> {
+        return getpropSnapshot()
+    }
+
+    override fun readReflectionValue(
+        property: String,
+    ): String {
+        return readViaReflection(property)
+    }
+
+    override fun readJvmValue(
+        property: String,
+    ): String {
+        return readViaJvm(property)
+    }
+
+    override fun readInlineNativeEntry(
+        property: String,
+    ): FullPropertyNativeEntry? {
+        return nativeBridge.readInlineSnapshot(listOf(property))[property]
     }
 
     /**

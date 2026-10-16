@@ -35,6 +35,7 @@ public enum class SystemPropertyCategory {
     BUILD_FINGERPRINT,
     SOURCE_CONSISTENCY,
     PROPERTY_CONSISTENCY,
+    FULL_AUDIT,
 }
 
 public enum class SystemPropertySource {

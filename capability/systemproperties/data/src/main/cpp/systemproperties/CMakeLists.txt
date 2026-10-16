@@ -5,5 +5,6 @@ duckdetector_native_unit(duckdetector_systemproperties
     prop_area_parser.cpp
     prop_area_probe.cpp
     readonly_handle_probe.cpp
+    full_property_snapshot.cpp
     native_bridge.cpp
 )

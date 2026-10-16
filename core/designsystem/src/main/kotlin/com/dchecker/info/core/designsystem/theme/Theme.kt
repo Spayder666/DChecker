@@ -42,11 +42,13 @@ import io.github.xiaotong6666.uihelper.mode.UiMode
 /** Distinct native MIUIX and dynamic Material Expressive skins over the same UI state. */
 @Composable
 public fun DuckDetectorTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = true,
     uiMode: UiMode = UiMode.Miuix,
     content: @Composable () -> Unit,
 ) {
-    val baseScheme = if (darkTheme) DarkMonochromeScheme else LightMonochromeScheme
+    // DChecker identity: always dark, always the fork's green seed.
+    val darkTheme = true
+    val baseScheme = DarkMonochromeScheme
     val view = LocalView.current
     val context = LocalContext.current
 
@@ -54,22 +56,14 @@ public fun DuckDetectorTheme(
         SideEffect {
             val window = (view.context as Activity).window
             WindowCompat.setDecorFitsSystemWindows(window, false)
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars =
-                !darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = false
         }
     }
 
     val appMaterialScheme = if (uiMode == UiMode.Material) {
-        val seed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (darkTheme) {
-                dynamicDarkColorScheme(context).primary
-            } else {
-                dynamicLightColorScheme(context).primary
-            }
-        } else {
-            baseScheme.primary
-        }
+        // DChecker: keep the green identity instead of seeding from the wallpaper.
+        val seed = baseScheme.primary
         rememberDynamicColorScheme(
             seedColor = seed,
             isDark = darkTheme,

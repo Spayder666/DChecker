@@ -35,6 +35,7 @@ android {
 generateDetectorCards(packageName = "com.dchecker.info.ui")
 
 dependencies {
+    implementation(libs.androidx.appcompat)
     implementation(libs.uihelper)
     implementation(libs.miuix.ui)
     implementation(libs.miuix.nav)

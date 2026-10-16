@@ -1,12 +1,15 @@
+adb_runtime
 bootloader
 custom_rom
 dangerous_apps
+heap_residue
 kernel_check
 lsposed
 memory
 mount
 native_root
 play_integrity_fix
+root_managers
 selinux
 su
 system_properties

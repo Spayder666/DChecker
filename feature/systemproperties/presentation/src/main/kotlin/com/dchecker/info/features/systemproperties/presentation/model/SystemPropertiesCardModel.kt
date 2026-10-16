@@ -17,8 +17,11 @@
 
 package com.dchecker.info.features.systemproperties.presentation.model
 
+import com.dchecker.info.capability.systemproperties.domain.SystemPropertyCategory
 import com.dchecker.info.core.evidence.DetectorStatus
 import com.dchecker.info.core.report.DetectorHeadline
+import com.dchecker.info.features.systemproperties.domain.PropertyAuditMethod
+import com.dchecker.info.features.systemproperties.domain.PropertyDivergenceKind
 
 data class SystemPropertiesCardModel(
     override val title: String,
@@ -36,6 +39,10 @@ data class SystemPropertiesCardModel(
     val impactItems: List<SystemPropertiesImpactItemModel>,
     val methodRows: List<SystemPropertiesDetailRowModel>,
     val scanRows: List<SystemPropertiesDetailRowModel>,
+    val auditRows: List<SystemPropertiesDetailRowModel> = emptyList(),
+    val auditMismatches: List<SystemPropertiesMismatchModel> = emptyList(),
+    val auditAvailable: Boolean = false,
+    val auditCheckedCount: Int = 0,
 ) : DetectorHeadline
 
 /** The facts in the card's header, in the order the export lists them. */
@@ -60,6 +67,20 @@ data class SystemPropertiesDetailRowModel(
     val status: DetectorStatus,
     val detail: String? = null,
     val detailMonospace: Boolean = false,
+)
+
+public data class SystemPropertiesMismatchMethodModel(
+    val method: PropertyAuditMethod,
+    val value: String,
+    val divergent: Boolean,
+)
+
+public data class SystemPropertiesMismatchModel(
+    val property: String,
+    val kind: PropertyDivergenceKind,
+    val category: SystemPropertyCategory,
+    val status: DetectorStatus,
+    val methods: List<SystemPropertiesMismatchMethodModel>,
 )
 
 data class SystemPropertiesImpactItemModel(

@@ -22,8 +22,8 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.FrameLayout
-import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
@@ -39,7 +39,9 @@ import com.dchecker.info.ui.appearance.UiAppearanceStore
 import io.github.xiaotong6666.uihelper.mode.UiMode
 import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
+// AppCompatActivity is required so per-app locales set through AppCompatDelegate apply and
+// persist below API 33.
+class MainActivity : AppCompatActivity() {
 
     private var procMountSampler: WebView? = null
 

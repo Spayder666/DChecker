@@ -17,7 +17,16 @@
 
 package com.dchecker.info.features.systemproperties.ui.card
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import com.dchecker.info.features.systemproperties.ui.R
+import com.dchecker.info.features.systemproperties.ui.SystemPropertiesMismatchDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,7 +46,6 @@ import androidx.compose.material.icons.rounded.VerifiedUser
 import androidx.compose.material.icons.rounded.ViewInAr
 import com.dchecker.info.core.ui.components.DuckIcon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,6 +72,16 @@ internal fun SystemPropertiesDetectorCard(
     model: SystemPropertiesCardModel,
     modifier: Modifier = Modifier,
 ) {
+    var showMismatches by rememberSaveable { mutableStateOf(false) }
+
+    if (showMismatches) {
+        SystemPropertiesMismatchDialog(
+            mismatches = model.auditMismatches,
+            checkedCount = model.auditCheckedCount,
+            onDismiss = { showMismatches = false },
+        )
+    }
+
     DetectorCardFrame(
         title = model.title,
         subtitle = model.subtitle,
@@ -115,8 +133,17 @@ internal fun SystemPropertiesDetectorCard(
                 title = stringResource(R.string.systemproperties_section_source_consistency),
                 icon = Icons.AutoMirrored.Rounded.CompareArrows,
                 rows = model.sourceRows,
+                showDivider = model.auditRows.isNotEmpty() || model.consistencyRows.isNotEmpty() || model.infoRows.isNotEmpty() ||
+                    model.impactItems.isNotEmpty() || model.methodRows.isNotEmpty() || model.scanRows.isNotEmpty(),
+                )
+            }
+
+            item(visible = model.auditRows.isNotEmpty()) {
+                SystemPropertiesAuditSection(
+                model = model,
                 showDivider = model.consistencyRows.isNotEmpty() || model.infoRows.isNotEmpty() ||
                     model.impactItems.isNotEmpty() || model.methodRows.isNotEmpty() || model.scanRows.isNotEmpty(),
+                onViewMismatches = { showMismatches = true },
                 )
             }
 
@@ -292,5 +319,69 @@ private fun SystemPropertiesImpactRow(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+    }
+}
+
+@Composable
+private fun SystemPropertiesAuditSection(
+    model: SystemPropertiesCardModel,
+    showDivider: Boolean,
+    onViewMismatches: () -> Unit,
+) {
+    DetectorSectionFrame(
+        title = stringResource(R.string.sp_audit_section_title),
+        icon = Icons.AutoMirrored.Rounded.FactCheck,
+        severity = highestSectionSeverity(model.auditRows.map { it.status }),
+        showDivider = showDivider,
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
+            model.auditRows.forEachIndexed { index, row ->
+                SystemPropertiesDetailRow(row = row)
+                if (index < model.auditRows.lastIndex) {
+                    DetectorHairline()
+                }
+            }
+        }
+    }
+    if (model.auditMismatches.isNotEmpty() || model.auditAvailable) {
+        SystemPropertiesAuditListButton(
+            mismatchCount = model.auditMismatches.size,
+            onViewMismatches = onViewMismatches,
+        )
+    }
+}
+
+@Composable
+private fun SystemPropertiesAuditListButton(
+    mismatchCount: Int,
+    onViewMismatches: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        DuckIcon(
+            imageVector = Icons.AutoMirrored.Rounded.OpenInNew,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(16.dp),
+        )
+        WrapSafeText(
+            text = if (mismatchCount > 0) {
+                stringResource(R.string.sp_audit_view_mismatches, mismatchCount)
+            } else {
+                stringResource(R.string.sp_audit_view_all)
+            },
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        TextButton(onClick = onViewMismatches) {
+            WrapSafeText(
+                text = stringResource(R.string.sp_audit_open),
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
     }
 }

@@ -21,6 +21,7 @@ import android.os.Build
 import com.dchecker.info.capability.systemproperties.domain.SystemPropertySeverity
 import com.dchecker.info.capability.systemproperties.domain.SystemPropertySignal
 import com.dchecker.info.features.systemproperties.data.rules.SystemPropertiesCatalog
+import com.dchecker.info.features.systemproperties.domain.FullPropertyAudit
 import com.dchecker.info.features.systemproperties.domain.SystemPropertiesMethodOutcome
 import com.dchecker.info.features.systemproperties.domain.SystemPropertiesMethodResult
 
@@ -40,6 +41,7 @@ internal fun buildMethods(
     propAreaAvailable: Boolean,
     propAreaContextCount: Int,
     propAreaHoleCount: Int,
+    fullAudit: FullPropertyAudit,
 ): List<SystemPropertiesMethodResult> {
     val buildDangerCount = buildSignals.count { it.severity == SystemPropertySeverity.DANGER }
     val buildWarningCount = buildSignals.count { it.severity == SystemPropertySeverity.WARNING }
@@ -128,6 +130,27 @@ internal fun buildMethods(
                 else -> SystemPropertiesMethodOutcome.SUPPORT
             },
             detail = "Cross-source comparison across reflection, getprop, JVM, and native libc reads.",
+        ),
+        SystemPropertiesMethodResult(
+            label = "Full property audit",
+            summary = when {
+                fullAudit.checkedCount == 0 -> "Unavailable"
+                fullAudit.dangerDivergenceCount > 0 ->
+                    "${fullAudit.dangerDivergenceCount} danger / ${fullAudit.mismatchCount} mismatch(es)"
+
+                fullAudit.mismatchCount > 0 ->
+                    "${fullAudit.mismatchCount} mismatch(es) / ${fullAudit.checkedCount}"
+
+                else -> "Aligned / ${fullAudit.checkedCount}"
+            },
+            outcome = when {
+                fullAudit.dangerDivergenceCount > 0 -> SystemPropertiesMethodOutcome.DANGER
+                fullAudit.hasDivergences -> SystemPropertiesMethodOutcome.WARNING
+                fullAudit.checkedCount > 0 -> SystemPropertiesMethodOutcome.CLEAN
+                else -> SystemPropertiesMethodOutcome.SUPPORT
+            },
+            detail = "Every property compared across Java reflection, JVM getprop, " +
+                    "System.getProperty, native callback, native legacy get, and native shell getprop.",
         ),
         SystemPropertiesMethodResult(
             label = "Cross-check rules",

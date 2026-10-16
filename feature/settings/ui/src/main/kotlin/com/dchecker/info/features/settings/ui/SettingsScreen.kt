@@ -26,20 +26,30 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.overscroll
 import androidx.compose.foundation.rememberOverscrollEffect
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.Speed
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.os.LocaleListCompat
 import com.dchecker.info.core.designsystem.theme.DuckTheme
+import com.dchecker.info.core.ui.components.WrapSafeText
 import com.dchecker.info.features.settings.presentation.model.SettingsUiState
 import com.dchecker.info.features.settings.ui.components.AboutSection
 import com.dchecker.info.features.settings.ui.components.ConsentSettingItem
@@ -173,6 +183,8 @@ private fun SettingsPage(
                     }
                 }
 
+                AppLanguageCard()
+
                 AboutSection(
                     uiState = uiState,
                     onCheckForUpdates = onCheckForUpdates,
@@ -182,6 +194,91 @@ private fun SettingsPage(
                 ContributorsSection()
                 ContributorNameWordmark()
                 Spacer(modifier = Modifier.height(20.dp))
+            }
+        }
+    }
+}
+
+private val LanguageOptions = listOf(
+    null to R.string.settings_language_system,
+    "en" to R.string.settings_language_en,
+    "ru" to R.string.settings_language_ru,
+    "zh-CN" to R.string.settings_language_zh,
+)
+
+@Composable
+private fun AppLanguageCard() {
+    val current = AppCompatDelegate.getApplicationLocales()
+    val currentTag = current.toLanguageTags().takeIf { it.isNotEmpty() }
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.extraLarge,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 18.dp, vertical = 18.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+            ) {
+                Surface(
+                    shape = MaterialTheme.shapes.large,
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .padding(10.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Language,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                }
+
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    WrapSafeText(
+                        text = stringResource(R.string.settings_language_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    WrapSafeText(
+                        text = stringResource(R.string.settings_language_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                LanguageOptions.forEach { (tag, labelRes) ->
+                    val selected = currentTag == tag
+                    FilterChip(
+                        selected = selected,
+                        onClick = {
+                            AppCompatDelegate.setApplicationLocales(
+                                if (tag == null) {
+                                    LocaleListCompat.getEmptyLocaleList()
+                                } else {
+                                    LocaleListCompat.forLanguageTags(tag)
+                                }
+                            )
+                        },
+                        label = { WrapSafeText(text = stringResource(labelRes)) },
+                    )
+                }
             }
         }
     }

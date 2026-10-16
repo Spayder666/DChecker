@@ -61,6 +61,7 @@ data class SystemPropertiesReport(
     val propAreaContextCount: Int,
     val propAreaHoleCount: Int,
     val methods: List<SystemPropertiesMethodResult>,
+    val fullAudit: FullPropertyAudit = FullPropertyAudit(),
     val errorMessage: String? = null,
     /** Diagnostic only: the status, verdict and review counts never read it. */
     val propertyAreaMtimes: List<PropertyAreaMtime> = emptyList(),
