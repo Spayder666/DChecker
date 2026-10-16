@@ -247,8 +247,8 @@ internal fun AppReadyShell(
                     items = listOf(
                         NavigationShellItem(
                             title = stringResource(R.string.navigation_home),
-                            topBarTitle = "Duck Detector",
-                            compactTopBarTitle = "Duck Detector",
+                            topBarTitle = "DChecker",
+                            compactTopBarTitle = "DChecker",
                             icon = Icons.Outlined.HomeOutline,
                             selectedIcon = Icons.Rounded.Home,
                             leadingContent = { DashboardTopBarBrandIcon() },
@@ -257,7 +257,7 @@ internal fun AppReadyShell(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     DashboardTopBarBrandIcon()
                                     Spacer(modifier = Modifier.size(10.dp))
-                                    Text("Duck Detector", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Text("DChecker", maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 }
                             },
                             trailingContent = { DashboardTelegramAction() },
